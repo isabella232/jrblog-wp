@@ -512,7 +512,7 @@ function jrblog_widgets_init() {
 	jrblog_widgets_extend();
 }
 endif;
-add_action( 'widgets_init', 'jrblog_widgets_init' );
+//add_action( 'widgets_init', 'jrblog_widgets_init' );
 
 if ( ! function_exists( 'jrblog_class_extend' ) ) :
 /**
@@ -696,13 +696,6 @@ add_filter('the_excerpt', 'jrblog_excerpt_more');
  */
 function jrblog_setup() {
 	/*
-	 * Import WP Less
-	 *
-	 * This will be used for all available stylesheets.
-	 */
-	require_once( 'wp-less/wp-less.php' );
-
-	/*
 	 * Makes Template available for translation.
 	 *
 	 * Translations can be added to the /languages/ directory.
@@ -719,11 +712,11 @@ function jrblog_setup() {
 	add_theme_support( 'post-formats', array( 'aside', 'image', 'link', 'quote', 'status' ) );
 
 	// This theme uses wp_nav_menu() in five locations.
-	register_nav_menu( 'primary', __( 'Primary Menu', 'jrblog' ) );
+	/*register_nav_menu( 'primary', __( 'Primary Menu', 'jrblog' ) );
 	register_nav_menu( 'footer-1', __( 'Footer 1', 'jrblog' ) );
 	register_nav_menu( 'footer-2', __( 'Footer 2', 'jrblog' ) );
 	register_nav_menu( 'footer-3', __( 'Footer 3', 'jrblog' ) );
-	register_nav_menu( 'footer-4', __( 'Footer 4', 'jrblog' ) );
+	register_nav_menu( 'footer-4', __( 'Footer 4', 'jrblog' ) );*/
 
 	// This theme uses a custom image size for featured images, displayed on "standard" posts.
 	add_theme_support( 'post-thumbnails' );

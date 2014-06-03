@@ -1,62 +1,78 @@
-<?php
-/**
- * The template for displaying the footer.
- *
- * Contains footer content and the closing of the
- * #main and #page div elements.
- *
- * @package WordPress
- * @subpackage jrConway.jrBlog
- * @since jrBlog 1.0
- */
-?>
-			<div class="clearfix">&nbsp;</div>
-		</div><!-- #main .wrapper -->
-
-		<footer id="colophon" role="contentinfo">
-			<div class="site-bar">&nbsp;</div><!-- .site-bar -->
-			<div class="site-info">
-				<div class="copyright-main">
-					<?php if(is_active_sidebar('copyright-1')) : ?>
-						<?php dynamic_sidebar('copyright-1'); ?>
-					<?php elseif(of_get_option('footer_copyright')): ?>
-						<?php echo of_get_option('footer_copyright', 'no entry'); ?>
-					<?php else: ?>
-						<?php do_action( 'jrblog_credits' ); ?>
-						<a href="<?php echo esc_url( __( 'http://www.jrconway.net/', 'jrblog' ) ); ?>" title="<?php esc_attr_e( 'Responsive Blog Theme for Wordpress', 'jrblog' ); ?>"><?php printf( __( 'jrBlog Responsive Wordpress Theme &copy; %s', 'jrblog' ), 'jrConway Programming' ); ?></a><br />
-						Free Social Icons by <a href="<?php echo esc_url( __( 'http://icondock.com/', 'jrblog' ) ); ?>" title="<?php esc_attr_e( 'Icon Dock', 'jrblog' ); ?>">IconDock</a>
-					<?php endif; ?>
-				</div>
-				<aside class="copyright-aside">
-					<?php if(is_active_sidebar('copyright-2')) : ?>
-						<?php dynamic_sidebar('copyright-2'); ?>
-					<?php elseif(jrblog_follow_icons()): ?>
-						<?php echo jrblog_follow_icons(); ?>
-					<?php endif; ?>
-				</aside>
-			</div><!-- .site-info -->
-			<div class="site-footer">
-			</div><!-- .site-footer -->
-			<div class="site-footer-bg">
-
-			</div><!-- .site-footer-bg -->
-		</footer><!-- #colophon -->
-	</div><!-- #page -->
-
-	<!-- START Google+ API Code -->
-	<script type="text/javascript">
-		(function() {
-			var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-			po.src = 'https://apis.google.com/js/plusone.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-		})();
-	</script>
-	<!-- END Google+ API Code -->
-
-	<!-- START Twitter JS -->
-	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-	<!-- END Twitter JS -->
-
-	<?php wp_footer(); ?>
-</body>
+<?php
+/**
+ * @version   2.0.1 May 28, 2014
+ * @author    JaidynReiman http://www.jrconway.net
+ * @copyright Copyright (C) 2014 JaidynReiman
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+// no direct access
+defined( 'GANTRY_VERSION' ) or die( 'Restricted index access' );
+
+global $gantry; ?>
+
+                <?php echo $gantry->displayMainbody('mainbody','sidebar','standard','standard','standard','standard','standard', null, ob_get_clean() ); ?>
+            </div>
+            <?php /** End Main Body **/ ?>
+            <?php /** Begin Main Bottom **/ if ($gantry->countModules('mainbottom')) : ?>
+            <div id="rt-mainbottom">
+                <div class="rt-container">
+                    <?php echo $gantry->displayModules('mainbottom','standard','standard'); ?>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <?php /** End Main Bottom **/ endif; ?>
+            <?php /** Begin Extension **/ if ($gantry->countModules('extension')) : ?>
+            <div id="rt-extension">
+                <div class="rt-container">
+                    <?php echo $gantry->displayModules('extension','standard','standard'); ?>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <?php /** End Extension **/ endif; ?>
+        </div>
+    </div>
+    <?php /** Begin Bottom **/ if ($gantry->countModules('bottom')) : ?>
+    <div id="rt-bottom">
+        <div class="rt-container">
+            <?php echo $gantry->displayModules('bottom','standard','standard'); ?>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <?php /** End Bottom **/ endif; ?>
+    <?php /** Begin Footer Section **/ if ($gantry->countModules('footer') or $gantry->countModules('copyright')) : ?>
+    <footer id="rt-footer-surround">
+        <?php /** Begin Footer **/ if ($gantry->countModules('footer')) : ?>
+        <div id="rt-footer">
+            <div class="rt-container">
+                <?php echo $gantry->displayModules('footer','standard','standard'); ?>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <?php /** End Footer **/ endif; ?>
+        <?php /** Begin Copyright **/ if ($gantry->countModules('copyright')) : ?>
+        <div id="rt-copyright">
+            <div class="rt-container">
+                <?php echo $gantry->displayModules('copyright','standard','standard'); ?>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <?php /** End Copyright **/ endif; ?>
+    </footer>
+    <?php /** End Footer Surround **/ endif; ?>
+    <?php /** Begin Debug **/ if ($gantry->countModules('debug')) : ?>
+    <div id="rt-debug">
+        <div class="rt-container">
+            <?php echo $gantry->displayModules('debug','standard','standard'); ?>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <?php /** End Debug **/ endif; ?>
+    <?php /** Begin Analytics **/ if ($gantry->countModules('analytics')) : ?>
+    <?php echo $gantry->displayModules('analytics','basic','basic'); ?>
+    <?php /** End Analytics **/ endif; ?>
+    <?php $gantry->displayFooter(); ?>
+    </body>
 </html>
+<?php
+$gantry->finalize();
+?>
