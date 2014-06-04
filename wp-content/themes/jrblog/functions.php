@@ -307,7 +307,7 @@ function jrblog_widgets_extend() {
 }
 endif;
 
-if ( ! function_exists( 'jrblog_widgets_init' ) ) :
+if ( function_exists( 'jrblog_widgets_init' ) ) :
 /**
  * Registers our page widget areas.
  *
@@ -553,6 +553,7 @@ if ( ! function_exists( 'jrblog_class_init' ) ) :
  * @return array Filtered class values.
  */
 function jrblog_class_init( $classes ) {
+    return $classes;
 	// Check if No Sidebars or Full Width Template
 	if ((!is_active_sidebar( 'sidebar-1' ) && !is_active_sidebar( 'sidebar-2')) ||
 			is_page_template( 'templates/full-width.php' ) ) {
@@ -724,17 +725,6 @@ function jrblog_setup() {
 }
 add_action( 'after_setup_theme', 'jrblog_setup' );
 
-
-/* 
- * Loads the Options Panel
- *
- * If you're loading from a child theme use stylesheet_directory
- * instead of template_directory
- */
-if ( !function_exists( 'optionsframework_init' ) ) {
-	define( 'OPTIONS_FRAMEWORK_DIRECTORY', get_template_directory_uri() . '/inc/' );
-	require_once dirname( __FILE__ ) . '/inc/options-framework.php';
-}
 
 /**
  * Enqueues scripts and styles for front-end.
@@ -1069,6 +1059,7 @@ add_filter('user_contactmethods', 'jrblog_contact_info');
  * @since jrBlog 1.0
  */
 function jrblog_share_buttons($url = '', $text = '') {
+    return false;
 	// All Sharing Disabled?
 	if(of_get_option('share_disable')) {
 		return '';
@@ -1218,6 +1209,7 @@ function jrblog_linkedin_button($url = '', $text = '') {
  * @since jrBlog 1.0
  */
 function jrblog_follow_icons($force = false) {
+    return false;
 	// All Links Disabled?
 	if(of_get_option('follow_disable') && empty($force)) {
 		return '';

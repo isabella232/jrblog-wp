@@ -57,7 +57,7 @@
             </fieldset>
             <fieldset name="overview" label="OVERVIEW">
                 <field name="gantry" type="gantry" value="" panel_position="hiddens" />
-                <field name="template_full_name" type="hidden" default="jrBlog Wrapper Theme" />
+                <field name="template_full_name" type="hidden" default="jrBlog" />
                 <field name="template_author" type="hidden" default="JaidynReiman" />
                 <field name="overviewtips" type="tips" tab="overview" panel_position="right" show_label="false" />
                 <field name="grid_system" type="hidden" default="12" />

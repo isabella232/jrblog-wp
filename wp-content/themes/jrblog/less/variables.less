@@ -1,78 +1,56 @@
-/**
- * jrBlog Predefined Variables.
- *
- * This section contains all potentially interchangeable information as variables.
- * This includes colors, font sizes, line heights, and template paths.
- *
- * TO DO: Find a way for these variables to be usable without consulting other pages.
- * TO DO: Replace any remaining raw values in layout.less and text.less with variables.
- * TO DO: Add line-heights.
- *
- * @package WordPress
- * @subpackage jrBlog
- * @since jrBlog 1.9.3
- */
+// Essentials -----------------
+@white:                     #ffffff;
+@black:                     #000000;
+@light-grey:                #cccccc;
 
-// Globals
-@glb-bkgd1: #cccccc;
-@glb-bkgd2: transparent;
-@glb-bkgd3: transparent;
-@glb-colr1: #000000;
-@glb-colr2: #0000ff;
-@glb-colr3: #ff0000;
-@glb-shdw1: #000000;
+@baseFontSize:          14px;
+@baseLineHeight:        20px;
 
-// Fonts
-@fnt-size1: 14px;
-@fnt-size2: 16px;
-@fnt-size3: 18px;
-@fnt-size4: 20px;
-@fnt-size5: 10px;
-@fnt-size6: 12px;
+// Body ------------------------
+@bodybackground:        #f5f5f5;
+@bodybackground2:       #f0f0f0;
+@bodybackground3:       #fcfcfc;
+@bodybackground4:       #eaeaea;
+@bodytext:              #6e6e6e;
+@bodytextlight:         #aaaaaa;
+@bodytitle:             #303030;
+@bodyborder:            #d5d5d5;
+@bodyborder2:           #dddddd;
+@bodyborder3:           #d1d1d1;
+@bodycontrast:          #ffffff;
 
-// Header
-@hdr-grad1: #cccccc;
-@hdr-colr1: #000000;
-@hdr-size1: 30px;
-@hdr-size2: 16px;
-@hdr-line1: 30px;
-@hdr-line2: 20px;
+// Main Top --------------------
+@maintopbackground:     #f0f0f0;
 
-// Navigation
-@nav-bkgd1: #666666;
-@nav-bkgd2: #999999;
-@nav-colr1: #333333;
-@nav-colr2: #ffcccc;
-@nav-colr3: #ffffff;
-@nav-colr4: #ffcccc;
-@nav-colr5: #ffffff;
-@nav-grad1: #ffffff;
-@nav-grad2: #cccccc;
-@nav-grad3: #cccccc;
-@nav-grad4: #666666;
-@nav-rdis1: 15px;
-@nav-rdis2: 5px;
+// Footer ----------------------
+@footerbackground:      #eeeeee;
+@footertext:            #6e6e6e;
 
-// Content
-@cnt-bkgd1: #eeeeee;
-@cnt-bkgd2: #dddddd;
-@cnt-rdis1: 10px;
+// Form Feedbacks --------------
+@warningText:             #c09853;
+@warningBackground:       #fcf8e3;
+@warningBorder:           darken(spin(@warningBackground, -10), 3%);
 
-// Forms
-@frm-rdis1: 10px;
+@errorText:               #b94a48;
+@errorBackground:         #f2dede;
+@errorBorder:             darken(spin(@errorBackground, -10), 3%);
 
-// Footer
-@ftr-bkgd1: transparent;
+@successText:             #468847;
+@successBackground:       #dff0d8;
+@successBorder:           darken(spin(@successBackground, -10), 5%);
 
-// Sidebar
-@sid-colr1: #1F131F;
+@infoText:                #3a87ad;
+@infoBackground:          #d9edf7;
+@infoBorder:              darken(spin(@infoBackground, -10), 7%);
 
-// Widths
-//## TO DO: Move these widths into their respective areas. ##//
-@width1: 98%;
-@width2: 96%;
+@monoFontFamily:        Menlo, Monaco, Consolas, "Courier New", monospace;
 
-// Paths
-//### These are used to determine the location of image files. ###//
-@base-path: '/wp-content/themes/jrblog/';
-@main-path: '/wp-content/themes/jrblog/'; // Use this to point to a child theme.
+// Base Menu variables
+@menuFontFamily:    Arial, Helvetica, sans-serif;
+@menuFontSize:      13px;
+@menuLineHeight:    21px;
+@menuItemRadius:    4px;
+
+// Horizontal forms & lists
+// -------------------------
+@horizontalComponentOffset:       160px;
