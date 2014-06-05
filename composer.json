@@ -12,12 +12,15 @@
         "ponticlaro/bebop": "~0.9.1",
         "wpackagist/wp-super-cache":"1.4.*",
         "wpackagist/wordpress-seo":"1.5.*",
-        "wpackagist/gantry":"4.*"
+        "wpackagist/gantry":"4.*",
+        "wpackagist/disqus-comment-system":"4.*",
+        "wpackagist/contact-form-7":"3.*"
     },
     "require-dev": {
         "wpackagist/debug-bar":"0.8.*",
         "wpackagist/debug-bar-console":"0.3",
-        "wpackagist/rewrite-rules-inspector": "1.2.*"
+        "wpackagist/rewrite-rules-inspector": "1.2.*",
+        "wpackagist/wordpress-importer":"*"
     },
     "autoload": {
         "classmap": [

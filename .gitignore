@@ -10,6 +10,8 @@ wp-content/wp-cache-config.php
 wp-content/plugins/*
 wp-content/themes/*
 !wp-content/themes/jrblog
+!wp-content/themes/jrblog-child
+wp-content/themes/jrblog/css-compiled/*
 wp-content/cache/
 wp-content/backups/
 wp-content/index.php

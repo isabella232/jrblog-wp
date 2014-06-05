@@ -1,8 +1,8 @@
 <?php
 /**
- * @version   4.1.1 January 6, 2014
- * @author    RocketTheme http://www.rockettheme.com
- * @copyright Copyright (C) 2007 - 2014 RocketTheme, LLC
+ * @version   2.0.1 May 28, 2014
+ * @author    JaidynReiman http://www.jrconway.net
+ * @copyright Copyright (C) 2014 JaidynReiman
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
  */
 // no direct access
@@ -13,9 +13,10 @@ global $gantry;
 // get the current preset
 $gpreset = str_replace(' ','',strtolower($gantry->get('name')));
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html xml:lang="<?php echo $gantry->language; ?>" lang="<?php echo $gantry->language;?>" >
 <head>
+    <!--Mobile Viewport Optimized /-->
     <?php if ($gantry->get('layout-mode') == '960fixed') : ?>
     <meta name="viewport" content="width=960px, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <?php elseif ($gantry->get('layout-mode') == '1200fixed') : ?>

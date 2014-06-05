@@ -24,6 +24,10 @@ $gpreset = str_replace(' ','',strtolower($gantry->get('name')));
     <?php else : ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <?php endif; ?>
+    <?php if ($gantry->browser->name == 'ie') : ?>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <?php endif; ?> 
+
     <?php
         $gantry->displayHead();
 
