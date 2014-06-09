@@ -482,8 +482,9 @@
                 </fields>
 
                 <field name="headerstyle" type="selectbox" default="dark" label="HEADER_STYLE" description="HEADER_STYLE_DESC" isbodyclass="true" setbyurl="true" setinsession="true" setbysession="true" setincookie="true" setbycookie="true">
-                    <option value="dark">DARK</option>
-                    <option value="light">LIGHT</option>
+                    <option value="dark">Dark</option>
+                    <option value="light">Light</option>
+                    <option value="blue">Blue</option>
                 </field>
 
                 <field name="linkcolor" type="colorchooser" default="#2698de" label="LINK_COLOR" description="LINK_COLOR_DESC" setinsession="true" setbysession="true" setincookie="true" setbycookie="true"/>

@@ -13,7 +13,7 @@
         "wpackagist/wp-super-cache":"1.4.*",
         "wpackagist/wordpress-seo":"1.5.*",
         "wpackagist/gantry":"4.*",
-        "wpackagist/disqus-comment-system":"4.*",
+        "wpackagist/disqus-comment-system":"2.*",
         "wpackagist/contact-form-7":"3.*"
     },
     "require-dev": {

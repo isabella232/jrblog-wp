@@ -12,6 +12,7 @@ wp-content/themes/*
 !wp-content/themes/jrblog
 !wp-content/themes/jrblog-child
 wp-content/themes/jrblog/css-compiled/*
+!wp-content/themes/jrblog/css-compiled/index.php
 wp-content/cache/
 wp-content/backups/
 wp-content/index.php

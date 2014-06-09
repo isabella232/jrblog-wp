@@ -8,6 +8,64 @@
 
 
 #######################################
+## -- START BEBOP INITIALIZATION
+#######################################
+
+use \Ponticlaro\Bebop;
+
+date_default_timezone_set('America/Chicago');
+
+///////////////////////////
+// Autoload dependencies //
+///////////////////////////
+require_once ABSPATH . '/vendor/autoload.php';
+
+////////////////
+// Boot Bebop //
+////////////////
+Bebop::boot();
+
+//////////////////////
+// Set project urls //
+//////////////////////
+Bebop::setUrl(array(
+    ////////////
+    // Assets //
+    ////////////
+    "theme_css"    => Bebop::getUrl("theme", "css"),
+    "theme_less"   => Bebop::getUrl("theme", "less"),
+    "theme_js"     => Bebop::getUrl("theme", "js"),
+    "theme_images" => Bebop::getUrl("theme", "img"),
+    "theme_icons"  => Bebop::getUrl("theme", "img/icons")
+));
+
+///////////////////////
+// Set project paths //
+///////////////////////
+/*Bebop::setPath(array(
+    ""             => Bebop::getPath("theme", "")
+));*/
+
+
+///////////////////////////
+// Set custom post types //
+///////////////////////////
+
+// Contact
+$contact_post_type = Bebop::PostType('Contact', array(
+    'supports'    => array(
+        'title', 
+        'editor'
+    )
+));
+
+
+#######################################
+## -- END BEBOP INITIALIZATION
+#######################################
+
+
+#######################################
 ## -- START GANTRY FRAMEWORK
 #######################################
 
@@ -131,85 +189,11 @@ function gantry_pagination($custom_query) {
 ## -- START CUSTOMIZATION OPTIONS
 #######################################
 
-
-if ( ! function_exists( 'jrblog_custom_styles' ) ) :
-/**
- * Set Custom Stylesheets
- *
- * @since jrBlog 1.9.3
- */
-function jrblog_custom_styles() {
-	/*
-	 * Loads our main stylesheet.
-	 */
-	wp_enqueue_style( 'jrblog-styles', get_template_directory_uri() . '/css/style.less');
-
-	/*
-	 * Load jQuery
-	 */
-	if (!is_admin()) {
-		wp_enqueue_script('jquery');
-	}
-
-	/*
-	 * Load Javascript Functions
-	 */
-	wp_enqueue_script( 'modernizr', dirname(get_template_directory_uri()) . '/js/libs/modernizr-2.0.6.min.js');
-	wp_enqueue_script( 'twitter-bootstrap', dirname(get_template_directory_uri()) . '/js/bootstrap.min.js', array('jquery'));
-	wp_enqueue_script( 'jrblog-scripts', dirname(get_template_directory_uri()) . '/js/main.js', array('jquery'));
-
-	/*
-	 * CHILD THEME:
-	 *
-	 * Copy this function to the functions.php file in the new child theme.
-	 * Copy css/child.less to your child themes css folder and rename it style.less.
-	 * Change "child" in the line below to your child theme's directory name.
-	 * Uncomment the line below.
-	 */
-	//wp_enqueue_style( 'jrblog-styles', dirname(get_template_directory_uri()) . '/child/css/style.less');
-}
-endif;
-add_action( 'wp_enqueue_scripts', 'jrblog_custom_styles' );
-
-if ( ! function_exists( 'jrblog_extend_contact' ) ) :
-/**
- * Extend Custom Contact Fields
- *
- * @since jrBlog 1.0
- */
-function jrblog_extend_contact($fields) {
-	/**
-	  * CHILD THEME:
-	  *
-	  * Copy this function to the functions.php of your child theme and 
-	  * perform contact field overrides in the same way as the default.
-	  *
-	  * You can also override the default function, but this is NOT
-	  * AT ALL recommended.
-	  */
-
-	// Add Array Overrides
-
-	// EXAMPLE: DISABLE FIELD
-	/*$fields['skype'] = false;*/
-
-	// EXAMPLE: ADD NEW FIELD
-	/*$fields['myspace] = array(
-		"name"   => "MySpace",
-		"url"    => "http://new.myspace.com/",
-		"share"  => false
-	);*/
-
-	// Return Contact Fields
-	return $fields;
-}
-endif;
-
 if ( ! function_exists( 'jrblog_custom_contact' ) ) :
 /**
  * Set Custom Contact Fields
  *
- * @since jrBlog 1.0
+ * @since jrBlog 2.0.1
  */
 function jrblog_custom_contact() {
 	/**
@@ -296,7 +280,7 @@ endif;
  * @uses register_nav_menu() To add support for navigation menus.
  * @uses set_post_thumbnail_size() To set a custom post thumbnail size.
  *
- * @since jrBlog 1.0
+ * @since jrBlog 2.0.1
  */
 function jrblog_setup() {
 	/*
@@ -321,11 +305,58 @@ function jrblog_setup() {
 }
 add_action( 'after_setup_theme', 'jrblog_setup' );
 
+/**
+ * Update Setting on Theme Switch
+ *
+ * @since jrBlog 2.0.1
+ */
+function jrblog_switch_theme() {
+    // Get Existing Versions
+    $versions   = get_option('jrblog_theme_versions', array());
+
+    // Version 2.0.1
+    if(!in_array('2.0.1', $versions)) {
+        // Set Version
+        $versions[] = '2.0.1';
+
+        // Add Contact Fields
+        $contacts   = jrblog_custom_contact();
+        $num        = 0;
+        foreach($contacts as $key => $contact) {
+            // No Contact Data?
+            if(empty($contact)) {
+                // Skip
+                continue;
+            }
+
+            // Insert Post
+            $post = array(
+                'post_name'      => $key,
+                'post_title'     => $contact['name'],
+                'post_status'    => 'publish',
+                'post_type'      => 'contact',
+                'ping_status'    => 'closed',
+                'menu_order'     => $num,
+                'comment_status' => 'closed'
+            );  
+            $id = wp_insert_post( $post, $wp_error );
+            update_post_meta($id, 'jrblog_social_url', $contact['url']);
+            update_post_meta($id, 'jrblog_social_share', $contact['share']);
+            update_post_meta($id, 'jrblog_social_sub', $contact['sub']);
+            $num++;
+        }
+    }
+
+    // Update Set Versions
+    update_option('jrblog_theme_versions', $versions);
+}
+add_action('after_switch_theme', 'jrblog_switch_theme');
+
 if ( ! function_exists( 'jrblog_schema' ) ):
 /**
  * Gets Site Schema From Theme Options
  *
- * @since jrBlog 1.0
+ * @since jrBlog 2.0.1
  */
 function jrblog_schema() {
 	// Get Theme Options
@@ -345,7 +376,7 @@ endif; // jrblog_schema
 /**
  * Add Extra Contact Fields
  *
- * @since jrBlog 1.0
+ * @since jrBlog 2.0.1
  */
 function jrblog_contact_info($contactmethods) {
 	// Get Social Sites
@@ -384,7 +415,7 @@ add_filter('user_contactmethods', 'jrblog_contact_info');
  * @author David A Conway Jr.
  * @param string $url  : the url to share; defaults to current page's url
  * @param string $text : the text in the share popup; defaults to current page's title
- * @since jrBlog 1.0
+ * @since jrBlog 2.0.1
  */
 function jrblog_share_buttons($url = '', $text = '') {
     return false;
@@ -423,7 +454,7 @@ function jrblog_share_buttons($url = '', $text = '') {
  * @author David A Conway Jr.
  * @param string $url  : the url to share; defaults to current page's url
  * @param string $text : the text in the share popup; defaults to current page's title
- * @since jrBlog 1.0
+ * @since jrBlog 2.0.1
  */
 function jrblog_facebook_button($url = '', $text = '') {
 	// Include HREF?
@@ -451,7 +482,7 @@ function jrblog_facebook_button($url = '', $text = '') {
  * @author David A Conway Jr.
  * @param string $url  : the url to share; defaults to current page's url
  * @param string $text : the text in the share popup; defaults to current page's title
- * @since jrBlog 1.0
+ * @since jrBlog 2.0.1
  */
 function jrblog_twitter_button($url = '', $text = '') {
 	// Include HREF?
@@ -479,7 +510,7 @@ function jrblog_twitter_button($url = '', $text = '') {
  * @author David A Conway Jr.
  * @param string $url  : the url to share; defaults to current page's url
  * @param string $text : the text in the share popup; defaults to current page's title
- * @since jrBlog 1.0
+ * @since jrBlog 2.0.1
  */
 function jrblog_googleplus_button($url = '', $text = '') {
 	// Include HREF?
@@ -507,7 +538,7 @@ function jrblog_googleplus_button($url = '', $text = '') {
  * @author David A Conway Jr.
  * @param string $url  : the url to share; defaults to current page's url
  * @param string $text : the text in the share popup; defaults to current page's title
- * @since jrBlog 1.0
+ * @since jrBlog 2.0.1
  */
 function jrblog_linkedin_button($url = '', $text = '') {
 	// Include HREF?
@@ -534,7 +565,7 @@ function jrblog_linkedin_button($url = '', $text = '') {
  * Create Social Follow Icons
  *
  * @author David A Conway Jr.
- * @since jrBlog 1.0
+ * @since jrBlog 2.0.1
  */
 function jrblog_follow_icons($force = false) {
     return false;
@@ -684,7 +715,7 @@ add_shortcode( 'jrblog_socialicons', 'jrblog_socialicon_display' );
  *
  * @author Whitney Krape
  * @src http://www.whitneykrape.com/2011/07/quick-fix-for-relcategory-tag-in-wordpress/ 
- * @since jrBlog 1.0
+ * @since jrBlog 2.0.1
  */
 function jrblog_norel_cat($text) {
 	$text = str_replace('rel="category tag"', "", $text);
