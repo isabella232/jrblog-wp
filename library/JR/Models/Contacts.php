@@ -17,7 +17,7 @@ class Contacts {
         $args = array(
             'numberposts' => -1,
             'order'       => 'ASC',
-            'post_type'   => 'affiliate'
+            'post_type'   => 'contact'
         );
 
         if (isset($filters['numberposts'])) {

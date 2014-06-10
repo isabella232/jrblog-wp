@@ -12,6 +12,7 @@
 #######################################
 
 use \Ponticlaro\Bebop;
+use \JR\Models\Contacts;
 
 date_default_timezone_set('America/Chicago');
 
@@ -51,12 +52,92 @@ Bebop::setUrl(array(
 // Set custom post types //
 ///////////////////////////
 
-// Contact
-$contact_post_type = Bebop::PostType('Contact', array(
+// Social
+$social_post_type = Bebop::PostType(array('Social', 'Social Links'), array(
     'supports'    => array(
-        'title', 
-        'editor'
+        'title'
     )
+));
+
+
+//////////////////////
+// Custom Metaboxes //
+//////////////////////
+
+
+// Secondary Image
+$metafields = array(
+    'jrblog_social_icon'
+);
+
+$social_icon_metabox = Bebop::Metabox('Icon', $social_post_type, $metafields, function($data, $entry) { ?>
+
+    <?php Bebop::UI()->Media('Social Icon', $data->get('secondary_image_id'), array(
+        'field_name' => 'secondary_image_id',
+        'mime_types' => array('image')
+    ))->render(); ?>
+
+<?php }, array(
+    'context'  => 'side'
+));
+
+
+// Social Details
+$metafields = array(
+    'jrblog_social_sub',
+    'jrblog_social_url',
+    'jrblog_social_name'
+);
+
+$social_url_metabox = Bebop::Metabox('URL', $social_post_type, $metafields, function($data, $entry) {
+
+        $full = $data->get('jrblog_social_full') ?: false;
+        $sub  = $data->get('jrblog_social_sub');
+        $url  = $data->get('jrblog_social_url');
+        $name = $data->get('jrblog_social_name');
+    ?>
+
+    <label for="">Use Full Social Media URL?</label><br>
+    <input type="checkbox" name="jrblog_social_full" value="1" <?php echo (!empty($full) ? ' checked="checked"' : ''); ?> /><br><br>
+
+    <label for="">Use Social Media URL as Subdomain?</label><br>
+    <input type="checkbox" name="jrblog_social_sub" value="1" <?php echo (!empty($sub) ? ' checked="checked"' : ''); ?> /><br><br>
+
+    <label for="">Social Media URL</label><br>
+    <input type="text" class="large-text" name="jrblog_social_url" value="<?php echo $url; ?>"><br><br>
+
+    <label for="">Social Media Username</label><br>
+    <input type="text" class="large-text" name="jrblog_social_name" value="<?php echo $name; ?>">
+
+<?php }, array(
+    'context'  => 'side'
+));
+
+
+// Social Options
+$metafields = array(
+    'jrblog_social_share',
+    'jrblog_social_sharing',
+    'jrblog_social_follow'
+);
+
+$social_options_metabox = Bebop::Metabox('Options', $social_post_type, $metafields, function($data, $entry) {
+
+        $share   = $data->get('jrblog_social_share') ?: false;
+        $sharing = $data->get('jrblog_social_sharing') ?: false;
+        $follow  = $data->get('jrblog_social_follow') ?: false;
+    ?>
+
+    <?php if(!empty($share)): ?>
+        <label for="">Display Share Button?</label><br>
+        <input type="checkbox" name="jrblog_social_sharing" value="1" <?php echo (!empty($sharing) ? ' checked="checked"' : ''); ?> /><br><br>
+    <?php endif; ?>
+
+    <label for="">Display Follow Button?</label><br>
+    <input type="checkbox" name="jrblog_social_follow" value="1" <?php echo (!empty($follow) ? ' checked="checked"' : ''); ?> />
+
+<?php }, array(
+    'context'  => 'side'
 ));
 
 
@@ -251,9 +332,6 @@ function jrblog_custom_contact() {
 		)
 	);
 
-	// Extend Custom Fields
-	$fields = jrblog_extend_contact($fields);
-
 	// Return Contact Fields
 	return $fields;
 }
@@ -268,42 +346,6 @@ endif;
 #######################################
 ## -- START INITIALIZATION FUNCTIONS
 #######################################
-
-/**
- * Sets up theme defaults and registers the various WordPress features that
- * jrBlog supports.
- *
- * @uses load_theme_textdomain() For translation/localization support.
- * @uses add_editor_style() To add a Visual Editor stylesheet.
- * @uses add_theme_support() To add support for post thumbnails, automatic feed links,
- * 	custom background, and post formats.
- * @uses register_nav_menu() To add support for navigation menus.
- * @uses set_post_thumbnail_size() To set a custom post thumbnail size.
- *
- * @since jrBlog 2.0.1
- */
-function jrblog_setup() {
-	/*
-	 * Makes Template available for translation.
-	 *
-	 * Translations can be added to the /languages/ directory.
-	 */
-	load_theme_textdomain( 'jrblog', get_template_directory() . '/languages' );
-
-	// This theme styles the visual editor with editor-style.css to match the theme style.
-	add_editor_style();
-
-	// Adds RSS feed links to <head> for posts and comments.
-	add_theme_support( 'automatic-feed-links' );
-
-	// This theme supports a variety of post formats.
-	add_theme_support( 'post-formats', array( 'aside', 'image', 'link', 'quote', 'status' ) );
-
-	// This theme uses a custom image size for featured images, displayed on "standard" posts.
-	add_theme_support( 'post-thumbnails' );
-	set_post_thumbnail_size( 624, 9999 ); // Unlimited height, soft crop
-}
-add_action( 'after_setup_theme', 'jrblog_setup' );
 
 /**
  * Update Setting on Theme Switch
@@ -334,7 +376,7 @@ function jrblog_switch_theme() {
                 'post_name'      => $key,
                 'post_title'     => $contact['name'],
                 'post_status'    => 'publish',
-                'post_type'      => 'contact',
+                'post_type'      => 'social',
                 'ping_status'    => 'closed',
                 'menu_order'     => $num,
                 'comment_status' => 'closed'
