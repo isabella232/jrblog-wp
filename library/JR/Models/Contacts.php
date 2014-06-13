@@ -33,6 +33,20 @@ class Contacts {
         }
 
 
+        if (isset($filters['is_shared'])) {
+
+            if(empty($args['meta_query']) || is_array($args['meta_query'])) {
+                $args['meta_query'] = array();
+            }
+            $args['meta_query'][] = array(
+                'key'     => 'jrblog_social_sharing',
+                'value'   => $filters['is_shared'],
+                'compare' => '=',
+                'type'    => 'BINARY'
+            );
+        }
+
+
         $items = get_posts($args);
 
         $parsed_items = array();

@@ -65,15 +65,15 @@ $social_post_type = Bebop::PostType(array('Social', 'Social Links'), array(
 //////////////////////
 
 
-// Secondary Image
+// Icon Image
 $metafields = array(
-    'jrblog_social_icon'
+    'icon_image_id'
 );
 
 $social_icon_metabox = Bebop::Metabox('Icon', $social_post_type, $metafields, function($data, $entry) { ?>
 
-    <?php Bebop::UI()->Media('Social Icon', $data->get('secondary_image_id'), array(
-        'field_name' => 'secondary_image_id',
+    <?php Bebop::UI()->Media('Social Icon', $data->get('icon_image_id'), array(
+        'field_name' => 'icon_image_id',
         'mime_types' => array('image')
     ))->render(); ?>
 
@@ -84,6 +84,8 @@ $social_icon_metabox = Bebop::Metabox('Icon', $social_post_type, $metafields, fu
 
 // Social Details
 $metafields = array(
+    'jrblog_social_full',
+    'jrblog_social_slug',
     'jrblog_social_sub',
     'jrblog_social_url',
     'jrblog_social_name'
@@ -92,6 +94,7 @@ $metafields = array(
 $social_url_metabox = Bebop::Metabox('URL', $social_post_type, $metafields, function($data, $entry) {
 
         $full = $data->get('jrblog_social_full') ?: false;
+        $slug = $data->get('jrblog_social_slug') ?: $entry->post_name;
         $sub  = $data->get('jrblog_social_sub');
         $url  = $data->get('jrblog_social_url');
         $name = $data->get('jrblog_social_name');
@@ -382,6 +385,7 @@ function jrblog_switch_theme() {
                 'comment_status' => 'closed'
             );  
             $id = wp_insert_post( $post, $wp_error );
+            update_post_meta($id, 'jrblog_social_slug', $key);
             update_post_meta($id, 'jrblog_social_url', $contact['url']);
             update_post_meta($id, 'jrblog_social_share', $contact['share']);
             update_post_meta($id, 'jrblog_social_sub', $contact['sub']);
@@ -460,29 +464,24 @@ add_filter('user_contactmethods', 'jrblog_contact_info');
  * @since jrBlog 2.0.1
  */
 function jrblog_share_buttons($url = '', $text = '') {
-    return false;
 	// All Sharing Disabled?
-	if(of_get_option('share_disable')) {
+	/*if() {
 		return '';
-	}
+	}*/
 
 	// Get Social Sites
-	$fields = jrblog_custom_contact();
+    $fields = Contacts::filter(array("is_shared" => true));
 	$html   = '';
 
 	// Loop Social Sites
-	foreach($fields as $code => $field) {
-		// Valid Site?
-		if(!empty($field) && is_array($field) && count($field)) {
-			// Set Unique Variables
-			$share = of_get_option($code . '_share');
-			$func  = 'jrblog_' . $code . '_button';
+	foreach($fields as $field) {
+		// Set Unique Variables
+		$func  = 'jrblog_' . $field->slug . '_button';
 
-			// Add to Contact Methods
-			if(!empty($share) && function_exists($func)) {
-				// Get Share Button
-				$html .= $func($url, $text);
-			}
+		// Add to Contact Methods
+		if(!empty($field->is_sharing) && function_exists($func)) {
+			// Get Share Button
+			$html .= $func($url, $text);
 		}
 	}
 
@@ -610,9 +609,8 @@ function jrblog_linkedin_button($url = '', $text = '') {
  * @since jrBlog 2.0.1
  */
 function jrblog_follow_icons($force = false) {
-    return false;
 	// All Links Disabled?
-	if(of_get_option('follow_disable') && empty($force)) {
+	if(empty($force)) {
 		return '';
 	}
 
