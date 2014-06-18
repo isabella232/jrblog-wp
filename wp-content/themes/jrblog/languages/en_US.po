@@ -8,7 +8,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.6.5\n"
+"Language: en_US\n"
 
 msgid "TEMPLATE_NAME_SETTINGS"
 msgstr "Gantry Theme Settings"
@@ -289,6 +290,15 @@ msgstr "Header Style"
 
 msgid "HEADER_STYLE_DESC"
 msgstr "Select an available style option for the header area of the template."
+
+msgid "BLUE"
+msgstr "Blue"
+
+msgid "SOCIAL_ICON"
+msgstr "Social Icon Size"
+
+msgid "SOCIAL_ICON_SIZE"
+msgstr "Select the size of social media icons you want to display."
 
 # PAGE TEMPLATES TAB #
 msgid "CONTACT_FORM"

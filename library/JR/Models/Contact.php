@@ -1,6 +1,6 @@
 <?php
 
-namespace GW\Models;
+namespace JR\Models;
 
 class Contact {
 
@@ -33,8 +33,8 @@ class Contact {
         $this->is_follow     = get_post_meta($this->ID, 'jrblog_social_follow', true);
 
         // Icon
-        $json_item           = get_post_meta($this->ID, 'icon_image_id', true);
-        $this->has_icon      = !empty($json_item);
+        $icon_id             = get_post_meta($this->ID, 'icon_image', true);
+        $this->has_icon      = !empty($icon_id);
         if ($this->has_icon){
             $image           = wp_get_attachment_image_src( $icon_id, 'thumbnail' );
             $this->icon      = $image[0];

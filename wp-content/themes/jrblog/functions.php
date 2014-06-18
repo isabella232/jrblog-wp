@@ -131,10 +131,8 @@ $social_options_metabox = Bebop::Metabox('Options', $social_post_type, $metafiel
         $follow  = $data->get('jrblog_social_follow') ?: false;
     ?>
 
-    <?php if(!empty($share)): ?>
-        <label for="">Display Share Button?</label><br>
-        <input type="checkbox" name="jrblog_social_sharing" value="1" <?php echo (!empty($sharing) ? ' checked="checked"' : ''); ?> /><br><br>
-    <?php endif; ?>
+    <label for="">Display Share Button?</label><br>
+    <input type="checkbox" name="jrblog_social_sharing" value="1" <?php echo (!empty($sharing) ? ' checked="checked"' : ''); ?> /><br><br>
 
     <label for="">Display Follow Button?</label><br>
     <input type="checkbox" name="jrblog_social_follow" value="1" <?php echo (!empty($follow) ? ' checked="checked"' : ''); ?> />
@@ -609,115 +607,70 @@ function jrblog_linkedin_button($url = '', $text = '') {
  * @since jrBlog 2.0.1
  */
 function jrblog_follow_icons($force = false) {
-	// All Links Disabled?
-	if(empty($force)) {
-		return '';
-	}
+    global $gantry;
+
+    // Get Social Sites
+    $fields = Contacts::filter(array("is_follow" => true));
+    $size   = $gantry->get('social-icons');
+    $html   = '';
+
+    // All Links Disabled?
+    if((!is_array($fields) || !count($fields)) && empty($force)) {
+        return '';
+    }
 
 
-	// RSS Follow Enabled?
-	$html    = '';
-	$code    = 'rss';
-	$size    = of_get_option('follow_dims');
-	$follow  = of_get_option($code . '_follow');
-	if(!empty($follow)) {
-		// Set RSS Variables
-		$img     = '';
-		$rss     = '/feed';
-		$url     = 'http://feeds.feedburner.com/';
-		$acct    = of_get_option($code . '_acct');
-		$icon    = of_get_option($code . '_icon');
-		$custom  = of_get_option($code . '_custom');
-		$default = '/images/icons/' . $size . '/' . $code . '.png';
+    // Loop Social Sites
+    foreach($fields as $code => $field) {
+        // Valid Site?
+        if(!empty($field->ID)) {
+            // Set Unique Variables
+            $img     = '';
+            $href    = '';
+            $sub     = $field->use_subdomain;
+            $url     = $field->social_url;
+            $acct    = $field->username;
+            $icon    = $field->icon;
+            $follow  = $field->is_follow;
+            $default = '/images/icons/' . $size . '/' . $field->slug . '.png';
 
-		// Feedburner Enabled?
-		if(!empty($acct)) {
-			// Full URL Provided?
-			if(strpos($acct, 'http') !== false) {
-				$feed = $acct;
-			}
-			// Set Feedburner Feed
-			else {
-				$feed = $url . $acct;
-			}
-		}
-		// Use Internal Feed
-		else {
-			// Set WP Feed
-			$feed = $rss;
-		}
+            // Full URL Provided?
+            if(strpos($acct, 'http') !== false) {
+                // Set Specific Domain
+                $href = $acct;
+            }
+            // Is a Subdomain?
+            elseif(!empty($sub)) {
+                // Replace Subdomain
+                $href = str_replace('www', $acct, $url);
+            }
+            // Set Social URL
+            else {
+                // Set Default Domain
+                $href = $url . $acct;
+            }
 
-		// Use Custom Button?
-		if(!empty($custom)) {
-			// Set Custom Icon
-			$img = $icon;
-		}
-		// Use Default Button
-		else {
-			// Set Default Icon
-			$img = get_template_directory_uri() . $default;
-		}
+            // Add to Contact Methods
+            if(!empty($url) && ($field->use_full_url || !empty($acct))) {
+                // Use Custom Button?
+                if(!empty($icon)) {
+                    // Set Custom Icon
+                    $img = $icon;
+                }
+                // Use Default Button
+                else {
+                    // Set Default Icon
+                    $img = get_template_directory_uri() . $default;
+                }
 
-		// Add Link HTML
-		$html .= '<a href="' . $url . $acct . '" target="_blank"><img src="' . $img . '" alt="" width="' . $size . '" height="' . $size . '" /></a>';
-	}
+                // Add Link HTML
+                $html .= '<a href="' . $href . '" target="_blank"><img src="' . $img . '" alt="" width="' . $size . '" height="' . $size . '" /></a>';
+            }
+        }
+    }
 
-
-	// Get Social Sites
-	$fields = jrblog_custom_contact();
-
-	// Loop Social Sites
-	foreach($fields as $code => $field) {
-		// Valid Site?
-		if(!empty($field) && is_array($field) && count($field)) {
-			// Set Unique Variables
-			$img     = '';
-			$href    = '';
-			$sub     = $field['sub'];
-			$url     = $field['url'];
-			$acct    = of_get_option($code . '_acct');
-			$icon    = of_get_option($code . '_icon');
-			$custom  = of_get_option($code . '_custom');
-			$follow  = of_get_option($code . '_follow');
-			$default = '/images/icons/' . $size . '/' . $code . '.png';
-
-			// Full URL Provided?
-			if(strpos($acct, 'http') !== false) {
-				// Set Specific Domain
-				$href = $acct;
-			}
-			// Is a Subdomain?
-			elseif(!empty($sub)) {
-				// Replace Subdomain
-				$href = str_replace('www', $acct, $url);
-			}
-			// Set Social URL
-			else {
-				// Set Default Domain
-				$href = $url . $acct;
-			}
-
-			// Add to Contact Methods
-			if(!empty($follow) && !empty($url) && !empty($acct)) {
-				// Use Custom Button?
-				if(!empty($custom)) {
-					// Set Custom Icon
-					$img = $icon;
-				}
-				// Use Default Button
-				else {
-					// Set Default Icon
-					$img = get_template_directory_uri() . $default;
-				}
-
-				// Add Link HTML
-				$html .= '<a href="' . $href . '" target="_blank"><img src="' . $img . '" alt="" width="' . $size . '" height="' . $size . '" /></a>';
-			}
-		}
-	}
-
-	// Return Share HTML
-	return $html;
+    // Return Share HTML
+    return $html;
 }
 
 /**
@@ -727,12 +680,12 @@ function jrblog_follow_icons($force = false) {
   * @since Real Chords 1.9
   */
 function jrblog_socialicon_display( $atts ){
-	// Extract Attributes
-	extract( shortcode_atts( array(
-		'force'     => 'true',
-	), $atts ) );
+    // Extract Attributes
+    extract( shortcode_atts( array(
+        'force'     => 'true',
+    ), $atts ) );
 
-	// Return HTML Code
+    // Return HTML Code
     $html .= '<div class="jrblog_social_icons">';
     $html .= jrblog_follow_icons($force);
     $html .= '</div>';

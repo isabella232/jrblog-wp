@@ -290,6 +290,15 @@ msgstr "Header Style"
 msgid "HEADER_STYLE_DESC"
 msgstr "Select an available style option for the header area of the template."
 
+msgid "BLUE"
+msgstr "Blue"
+
+msgid "SOCIAL_ICON"
+msgstr "Social Icon Size"
+
+msgid "SOCIAL_ICON_SIZE"
+msgstr "Select the size of social media icons you want to display."
+
 # PAGE TEMPLATES TAB #
 
 msgid "CONTACT_FORM"

@@ -482,9 +482,9 @@
                 </fields>
 
                 <field name="headerstyle" type="selectbox" default="dark" label="HEADER_STYLE" description="HEADER_STYLE_DESC" isbodyclass="true" setbyurl="true" setinsession="true" setbysession="true" setincookie="true" setbycookie="true">
-                    <option value="dark">Dark</option>
-                    <option value="light">Light</option>
-                    <option value="blue">Blue</option>
+                    <option value="dark">DARK</option>
+                    <option value="light">LIGHT</option>
+                    <option value="blue">BLUE</option>
                 </field>
 
                 <field name="linkcolor" type="colorchooser" default="#2698de" label="LINK_COLOR" description="LINK_COLOR_DESC" setinsession="true" setbysession="true" setincookie="true" setbycookie="true"/>
@@ -526,6 +526,12 @@
                          <option value="xlarge">F_XLARGE</option>
                     </field>
                 </fields>
+
+                <field name="social-icons" type="selectbox" default="16" label="SOCIAL_ICON" description="SOCIAL_ICON_SIZE" setbyurl="true" setinsession="true" setbysession="true" setincookie="true" setbycookie="true" isbodyclass="true">
+                    <option value="16">16 x 16</option>
+                    <option value="24">24 x 24</option>
+                    <option value="32">32 x 32</option>
+                </field>
 
                 <fields name="pagination" type="chain" label="PAGINATION" description="PAGINATION_DESC" setinoverride="true">
                     <field name="enabled" type="toggle" default="1" label="ENABLED" enabler="true" />

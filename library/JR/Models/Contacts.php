@@ -1,8 +1,8 @@
 <?php
 
-namespace GW\Models;
+namespace JR\Models;
 
-use \GW\Models\Contact;
+use \JR\Models\Contact;
 
 class Contacts {
     
@@ -10,14 +10,14 @@ class Contacts {
      * Filters person post type entries
      * 
      * @param  array  $filters Associative array of filters
-     * @return array           Array of \GW\Models\Contact objects
+     * @return array           Array of \TR\Models\Contact objects
      */
     public static function filter(array $filters)
     {
         $args = array(
             'numberposts' => -1,
             'order'       => 'ASC',
-            'post_type'   => 'contact'
+            'post_type'   => 'social'
         );
 
         if (isset($filters['numberposts'])) {
@@ -41,6 +41,20 @@ class Contacts {
             $args['meta_query'][] = array(
                 'key'     => 'jrblog_social_sharing',
                 'value'   => $filters['is_shared'],
+                'compare' => '=',
+                'type'    => 'BINARY'
+            );
+        }
+
+
+        if (isset($filters['is_follow'])) {
+
+            if(empty($args['meta_query']) || is_array($args['meta_query'])) {
+                $args['meta_query'] = array();
+            }
+            $args['meta_query'][] = array(
+                'key'     => 'jrblog_social_follow',
+                'value'   => $filters['is_follow'],
                 'compare' => '=',
                 'type'    => 'BINARY'
             );
