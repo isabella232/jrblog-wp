@@ -67,13 +67,13 @@ $social_post_type = Bebop::PostType(array('Social', 'Social Links'), array(
 
 // Icon Image
 $metafields = array(
-    'icon_image_id'
+    'icon_image'
 );
 
 $social_icon_metabox = Bebop::Metabox('Icon', $social_post_type, $metafields, function($data, $entry) { ?>
 
-    <?php Bebop::UI()->Media('Social Icon', $data->get('icon_image_id'), array(
-        'field_name' => 'icon_image_id',
+    <?php Bebop::UI()->Media('Social Icon', $data->get('icon_image'), array(
+        'field_name' => 'icon_image',
         'mime_types' => array('image')
     ))->render(); ?>
 
@@ -462,10 +462,10 @@ add_filter('user_contactmethods', 'jrblog_contact_info');
  * @since jrBlog 2.0.1
  */
 function jrblog_share_buttons($url = '', $text = '') {
-	// All Sharing Disabled?
-	/*if() {
-		return '';
-	}*/
+    // All Sharing Disabled?
+    if(1) {
+        return '';
+    }
 
 	// Get Social Sites
     $fields = Contacts::filter(array("is_shared" => true));
