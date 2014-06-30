@@ -16,7 +16,7 @@ class Contacts {
     {
         $args = array(
             'numberposts' => -1,
-            'order'       => 'ASC',
+            'order'       => 'DESC',
             'orderby'     => 'post_date',
             'post_type'   => 'social'
         );
