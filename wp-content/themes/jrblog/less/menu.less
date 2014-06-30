@@ -398,23 +398,23 @@
 			border-top: 15px solid @menuMobileBack;
 			background-clip: content-box;
 			-webkit-background-clip: content-box;
-			background: @menuMobileBack url(../images/menu/tree-main.png) repeat-y !important;
+			background: @menuMobileBack url(@{templatepath}/images/menu/tree-main.png) repeat-y !important;
 
 			// everything else
 			ul, ol {
-				background: @menuMobileBack url(../images/menu/tree-main.png) repeat-y !important;
+				background: @menuMobileBack url(@{templatepath}/images/menu/tree-main.png) repeat-y !important;
 			}
 
 
 			li {
-				background: url(../images/menu/tree-node.png) no-repeat;
+				background: url(@{templatepath}/images/menu/tree-node.png) no-repeat;
 				padding-left: 20px !important;
 				margin-right: 0 !important;
 
 				&.active {
 
 					&.last {
-						background: url(../images/menu/tree-node.png) no-repeat !important;
+						background: url(@{templatepath}/images/menu/tree-node.png) no-repeat !important;
 						border: 0 !important;
 						.box-shadow(none) !important;
 						> .item {
@@ -431,13 +431,13 @@
 				.columns-3 > .col3,
 				.columns-4 > .col4 {
 					> ul > li:last-child {
-						background: @menuMobileBack url(../images/menu/tree-node-last.png) 0 -2px no-repeat !important;
+						background: @menuMobileBack url(@{templatepath}/images/menu/tree-node-last.png) 0 -2px no-repeat !important;
 					}
 				}
 
 				ol {
 					> li:last-child {
-						background: @menuMobileBack url(../images/menu/tree-node-last.png) 0 -2px no-repeat !important;
+						background: @menuMobileBack url(@{templatepath}/images/menu/tree-node-last.png) 0 -2px no-repeat !important;
 					}
 				}
 
@@ -464,11 +464,11 @@
 			// top level special cases
 			> li:first-child, > li:first-child.active  {
 				margin-top: -15px;
-				background: url(../images/menu/tree-node-first.png) no-repeat !important;
+				background: url(@{templatepath}/images/menu/tree-node-first.png) no-repeat !important;
 			}
 
 			> li:last-child {
-				background: @menuMobileBack url(../images/menu/tree-node-last.png) 0 -2px no-repeat;
+				background: @menuMobileBack url(@{templatepath}/images/menu/tree-node-last.png) 0 -2px no-repeat;
 			}
 
 			.dropdown {

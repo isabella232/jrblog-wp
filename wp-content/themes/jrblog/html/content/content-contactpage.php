@@ -116,6 +116,8 @@ global $validated, $emailSent, $name_error, $email_error, $message_error, $recap
 
 				<?php edit_post_link( _r( 'Edit' ), '<div class="edit-link">', '</div>' ); ?>
 
+                <div class="clearfix"></div>
+
 				<?php /** End Post Content **/ ?>
 
 				<?php /** Begin Contact Form **/ ?>

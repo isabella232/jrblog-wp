@@ -19,7 +19,7 @@ h1, h2, h3, h4, h5, h6 {
 
 // Main Top
 #rt-maintop {
-    background: @maintopbackground url(../images/patterns/noise.png);
+    background: @maintopbackground url(@{templatepath}/images/patterns/noise.png);
     border-bottom: 1px solid @white;
     box-shadow: 0 1px 0 #cecece, inset 0 2px 4px 0 rgba(0,0,0,0.1);
 }
@@ -27,7 +27,7 @@ h1, h2, h3, h4, h5, h6 {
 // Footer
 #rt-footer {
     color: @footertext;
-    background: @footerbackground url(../images/patterns/noise.png);
+    background: @footerbackground url(@{templatepath}/images/patterns/noise.png);
     border-top: 1px solid #afafaf;
     .box-shadow(inset 0 5px 12px rgba(0,0,0,0.13));
 }
@@ -52,7 +52,7 @@ h1, h2, h3, h4, h5, h6 {
 .title2 {
     .title {
         color: @bodytitle;
-        background: @footerbackground url(../images/patterns/noise.png);
+        background: @footerbackground url(@{templatepath}/images/patterns/noise.png);
         .box-shadow(inset 0 2px 12px rgba(0,0,0,0.13));
     }
 }
@@ -67,7 +67,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .box2 {
     color: @bodytitle;
-    background: @footerbackground url(../images/patterns/noise.png);
+    background: @footerbackground url(@{templatepath}/images/patterns/noise.png);
     .box-shadow(inset 0 2px 12px rgba(0,0,0,0.13));
 }
 
@@ -131,7 +131,7 @@ ul.menu {
 
 // Branding
 .powered-by {
-    background: url(../images/logo/powered.png);
+    background: url(@{templatepath}/images/logo/powered.png);
 }
 
 // Typography

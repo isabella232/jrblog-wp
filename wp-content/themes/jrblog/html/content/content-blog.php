@@ -8,6 +8,9 @@
 // no direct access
 defined( 'ABSPATH' ) or die( 'Restricted access' );
 
+use \JR\Models\BlogPost;
+$blog = BlogPost::get(get_the_ID());
+
 // Create a shortcut for params.
 $category = get_the_category();
 ?>
@@ -146,8 +149,15 @@ $category = get_the_category();
 				<?php /** End Extended Meta **/ ?>
 
 				<?php /** Begin Featured Image **/ ?>
-		
-				<?php if( function_exists( 'the_post_thumbnail' ) && has_post_thumbnail() ) : ?>
+
+                <?php if( !empty($blog->use_video ) && (!empty($blog->use_excerpt) ||
+                        ($gantry->get( 'blog-content', 'content' ) != 'excerpt')) ): ?>
+
+                    <div class="img-intro-<?php echo $gantry->get( 'thumb-position', 'left' ); ?>">
+                        <?php echo $blog->video->html; ?>
+                    </div>
+
+                <?php elseif( function_exists( 'the_post_thumbnail' ) && has_post_thumbnail() ) : ?>
 
 					<div class="img-intro-<?php echo $gantry->get( 'thumb-position', 'left' ); ?>">
 						<?php the_post_thumbnail( 'gantryThumb', array( 'class' => 'rt-image ' ) ); ?>			
@@ -162,8 +172,12 @@ $category = get_the_category();
 				<div class="post-content">
 			
 					<?php if( $gantry->get( 'blog-content', 'content' ) == 'excerpt' ) : ?>
-					
-						<?php the_excerpt(); ?>
+
+                        <?php if( !empty($blog->use_excerpt) ): ?>
+                            <?php the_excerpt(); ?>
+                        <?php else: ?>
+                            <?php echo $blog->video->html; ?>
+                        <?php endif; ?>
 										
 					<?php else : ?>
 
@@ -180,6 +194,8 @@ $category = get_the_category();
 					</p>
 				
 				<?php endif; ?>
+
+                <div class="clearfix"></div>
 				
 				<?php /** End Post Content **/ ?>
 

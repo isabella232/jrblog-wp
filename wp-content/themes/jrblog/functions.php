@@ -64,8 +64,54 @@ $social_post_type = Bebop::PostType(array('Social', 'Social Links'), array(
 // Custom Metaboxes //
 //////////////////////
 
+// Page: Video
+$metafields = array(
+    'jrblog_page_video_src',
+    'jrblog_page_video_id'
+);
 
-// Icon Image
+$page_video_metabox = Bebop::Metabox('Video', array('post', 'page'), $metafields, function($data, $entry) {
+
+        $src = $data->get('jrblog_page_video_src');
+        $id  = $data->get('jrblog_page_video_id');
+    ?>
+
+    <label for="">Video Source</label><br>
+    <select name="jrblog_page_video_src">
+        <option value="youtube" <?php echo (($src == 'youtube') ? ' selected="selected"' : ''); ?>>Youtube</option>
+        <option value="vimeo" <?php echo (($src == 'vimeo') ? ' selected="selected"' : ''); ?>>Vimeo</option>
+    </select><br /><br />
+
+    <label for="">Video ID</label><br>
+    <p><small><em>(ID of the Youtube or Vimeo Video. The Video will replaced the Featured Image on the Blog.)</em></small></p>
+    <input type="text" class="large-text" name="jrblog_page_video_src" value="<?php echo $name; ?>">
+
+<?php }, array(
+    'context'  => 'side'
+));
+
+
+// Page: Options
+$metafields = array(
+    'jrblog_page_disable_excerpt'
+);
+
+$page_options_metabox = Bebop::Metabox('Options', array('post', 'page'), $metafields, function($data, $entry) {
+
+        $excerpt = $data->get('jrblog_page_disable_excerpt');
+    ?>
+
+    <label for="">Disable Text Excerpt</label><br>
+    <p><small><em>(When checked, a text excerpt will not be included with the featured image or video. If a Featured Image or Video is not provided the Text Excerpt will still be Used.)</em></small></p>
+    <input type="checkbox" name="jrblog_page_disable_excerpt" value="1" <?php echo (!empty($excerpt) ? ' checked="checked"' : ''); ?> /><br><br>
+
+<?php }, array(
+    'context'  => 'side'
+));
+
+
+
+// Social: Icon Image
 $metafields = array(
     'icon_image'
 );
@@ -82,7 +128,7 @@ $social_icon_metabox = Bebop::Metabox('Icon', $social_post_type, $metafields, fu
 ));
 
 
-// Social Details
+// Social: Details
 $metafields = array(
     'jrblog_social_full',
     'jrblog_social_slug',
@@ -117,7 +163,7 @@ $social_url_metabox = Bebop::Metabox('URL', $social_post_type, $metafields, func
 ));
 
 
-// Social Options
+// Social: Options
 $metafields = array(
     'jrblog_social_share',
     'jrblog_social_sharing',
