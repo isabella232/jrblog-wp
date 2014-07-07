@@ -23,7 +23,7 @@ global $gantry;
 	        $gantry->displayHead();
 
 			$gantry->addStyle('grid-responsive.css', 5);
-	        $gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>$gantry->get('headerstyle','dark')));
+	        $gantry->addLess('global.less', 'master.css', 8, array('headerstyle'=>$gantry->get('headerstyle','dark'), 'bodylayout' => $gantry->get('bodylayout','gantry'), 'layoutcolor' => $gantry->get('layoutcolor','light')));
 
 	        if ($gantry->browser->name == 'ie') {
 				if ($gantry->browser->shortversion == 8) {

@@ -484,6 +484,20 @@
                 <field name="headerstyle" type="selectbox" default="dark" label="HEADER_STYLE" description="HEADER_STYLE_DESC" isbodyclass="true" setbyurl="true" setinsession="true" setbysession="true" setincookie="true" setbycookie="true">
                     <option value="dark">DARK</option>
                     <option value="light">LIGHT</option>
+                    <option value="red">RED</option>
+                    <option value="green">GREEN</option>
+                    <option value="blue">BLUE</option>
+                </field>
+
+                <field name="bodylayout" type="selectbox" default="gantry" label="BODY_THEME" description="BODY_THEME_DESC" isbodyclass="true" setbyurl="true" setinsession="true" setbysession="true" setincookie="true" setbycookie="true">
+                    <option value="gantry">Gantry</option>
+                </field>
+
+                <field name="layoutcolor" type="selectbox" default="light" label="THEME_COLOR" description="THEME_COLOR_DESC" isbodyclass="true" setbyurl="true" setinsession="true" setbysession="true" setincookie="true" setbycookie="true">
+                    <option value="dark">DARK</option>
+                    <option value="light">LIGHT</option>
+                    <option value="red">RED</option>
+                    <option value="green">GREEN</option>
                     <option value="blue">BLUE</option>
                 </field>
 
@@ -516,6 +530,8 @@
                         <option value="optima">Optima</option>
                         <option value="palatino">Palatino</option>
                         <option value="trebuchet">Trebuchet</option>
+                        <option value="optimus">Optimus</option>
+                        <option value="commodoreangled">Commodore64 Angled</option>
                     </field>
                     <field name="size" type="hidden" default="default" setbyurl="true"/>
                     <field name="size-is" type="selectbox" default="default" label="FONT_SIZE" setinsession="true" setbysession="true" setincookie="true" setbycookie="true" isbodyclass="true">

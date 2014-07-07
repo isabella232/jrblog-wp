@@ -290,6 +290,24 @@ msgstr "Header Style"
 msgid "HEADER_STYLE_DESC"
 msgstr "Select an available style option for the header area of the template."
 
+msgid "BODY_THEME"
+msgstr "Body Theme"
+
+msgid "BODY_THEME_DESC"
+msgstr "Select an available style option for the body area of the template."
+
+msgid "THEME_COLOR"
+msgstr "Theme Colors"
+
+msgid "THEME_COLOR_DESC"
+msgstr "Select an available color option for the body theme."
+
+msgid "RED"
+msgstr "Red"
+
+msgid "GREEN"
+msgstr "Green"
+
 msgid "BLUE"
 msgstr "Blue"
 
