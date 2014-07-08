@@ -43,9 +43,25 @@ Bebop::setUrl(array(
 ///////////////////////
 // Set project paths //
 ///////////////////////
-/*Bebop::setPath(array(
-    ""             => Bebop::getPath("theme", "")
-));*/
+Bebop::setPath(array(
+
+));
+
+//////////////////
+// Back-end CSS //
+//////////////////
+Bebop::CSS('back')->register('jquery-chosen', 'css/jquery.chosen.css')
+                  ->enqueue('jquery-chosen')
+                 ->register('jrblog-admin', 'css/jrblog-admin.css')
+                 ->enqueue('jrblog-admin');
+
+/////////////////
+// Back-end JS //
+/////////////////
+Bebop::JS('back')->register('jquery-chosen', 'js/jquery.chosen.min.js')
+                 ->enqueue('jquery-chosen')
+                 ->register('jrblog-admin', 'js/jrblog-admin.js')
+                 ->enqueue('jrblog-admin');
 
 
 ///////////////////////////
@@ -58,6 +74,79 @@ $social_post_type = Bebop::PostType(array('Social', 'Social Links'), array(
         'title'
     )
 ));
+
+// Portfolio
+$portfolio_post_type = Bebop::PostType('Portfolio', array(
+    'has_archive' => true,
+    'supports'    => array(
+        'title',
+        'editor',
+        'thumbnail',
+        'author'
+    )
+));
+
+// Games
+$game_post_type = Bebop::PostType('Game', array(
+    'has_archive' => true,
+    'rewrite'     => array(
+        'slug' => 'games'
+    ),
+    'supports'    => array(
+        'title',
+        'editor',
+        'thumbnail',
+        'author'
+    )
+));
+
+// Characters
+$character_post_type = Bebop::PostType('Character', array(
+    'has_archive' => true,
+    'rewrite'     => array(
+        'slug' => 'characters'
+    ),
+    'supports'    => array(
+        'title',
+        'editor',
+        'thumbnail',
+        'author'
+    )
+));
+
+// Reviews
+$review_post_type = Bebop::PostType('Review', array(
+    'has_archive' => true,
+    'rewrite'     => array(
+        'slug' => 'reviews'
+    ),
+    'supports'    => array(
+        'title',
+        'editor',
+        'thumbnail',
+        'author'
+    )
+));
+
+
+///////////////////////
+// Custom Taxonomies //
+///////////////////////
+
+// Company
+Bebop::Taxonomy(array('Company', 'Companies'), array($character_post_type, $game_post_type))->setLabel('menu_name', 'Company');
+
+// Franchise
+Bebop::Taxonomy('Franchise', array($character_post_type, $game_post_type))->setLabel('menu_name', 'Franchise');
+
+// Alliance
+Bebop::Taxonomy('Alliance', array($character_post_type))->setLabel('menu_name', 'Alliance');
+
+// Genre
+Bebop::Taxonomy('Genre', array($game_post_type))->setLabel('menu_name', 'Genre');
+
+// Platform
+Bebop::Taxonomy('Platform', array($game_post_type))->setLabel('menu_name', 'Platform');
 
 
 //////////////////////

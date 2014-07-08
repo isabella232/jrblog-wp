@@ -24,4 +24,5 @@ readme.html
 xmlrpc.php
 /index.php
 /wp-*.php
+!/wp-config-sample.php
 *.log

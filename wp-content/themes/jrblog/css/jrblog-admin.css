@@ -1,0 +1,17 @@
+/**
+ * jrBlog Admin CSS
+ *
+ * This contains all CSS touches for the jrBlog Admin.
+ *
+ * @package WordPress
+ * @subpackage jrBlog
+ * @since jrBlog 1.9.4
+ */
+
+.chosen-container {
+    width: 100% !important;
+}
+
+.chosen-container-multi .chosen-choices li.search-field input[type="text"] {
+    height: 22px;
+}

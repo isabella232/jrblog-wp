@@ -7,6 +7,6 @@
  * @subpackage jrBlog
  * @since jrBlog 1.9.4
  */
-$(function() {
-	
+jQuery(function() {
+
 });
