@@ -1,0 +1,105 @@
+/**
+ * @version   2.0.1 May 28, 2014
+ * @author    JaidynReiman http://www.jrconway.net
+ * @copyright Copyright (C) 2014 JaidynReiman
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+@import "menu-@{headerstyle}.less";
+
+
+// Social Links
+.header-social.widget_text {
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+
+    .textwidget {
+        text-align: right;
+
+        .jrblog_social_icons {
+            a {
+                display: inline-block;
+                margin: 5px;
+            }
+        }
+    }
+}
+
+// Menu Changes
+.right-menu.widget_gantry_menu {
+    margin: 0;
+    padding: 0;
+
+    .module-content {
+        .gf-menu {
+            float: right;
+            text-align: right;
+
+            // Bottom border fixer
+            &.l1 > li {
+                &:hover > .item {
+                    .border-fixer {
+                        left: auto;
+                        right: 0px;
+                    }
+                }
+            }
+
+            li {
+                display: inline-block;
+                float: none;
+                margin-right: 0;
+                margin-left: 15px;
+
+                &:hover, &.active:hover {
+                    > .dropdown {
+                        .border-radius(5px 0 5px 5px);
+                        left: auto;
+                        right: -1px;
+
+                        li {
+                            margin: 0;
+                            display: block;
+
+                            > .dropdown {
+                                .border-radius(5px 0 5px 5px);
+                                left: -170px;
+                                right: auto;
+                            }
+
+                            > .item {
+                                padding: 0;
+                                padding-left: 25px;
+
+                                .border-fixer {
+                                    left: -1px;
+                                    right: auto;
+                                }
+                            }
+
+                            &.parent > .item {
+                                .border-radius(0 5px 5px 0);
+
+                                &:after {
+                                    content: @fa-var-chevron-left;
+                                    right: auto;
+                                    left: 6px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &:after {
+                clear:both;
+                width:100%;
+                height: 0;
+                content:".";
+                visibility: hidden;
+                opacity: 0;
+            }
+        }
+    }
+}

@@ -1,0 +1,55 @@
+/**
+ * @version   2.0.1 May 28, 2014
+ * @author    JaidynReiman http://www.jrconway.net
+ * @copyright Copyright (C) 2014 JaidynReiman
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 only
+ */
+
+
+// Responsive Iframe
+.jrblog_video_wrapper {
+    width: 100%;
+    position: relative;
+    padding-bottom: 56%;
+    padding-top: 30px;
+    margin-bottom: 20px;
+    height: 0;
+    overflow: auto; 
+    -webkit-overflow-scrolling:touch;
+    border: solid black 1px;
+
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+.img-fulltext-left, .img-fulltext-right {
+    .jrblog_video_wrapper {
+        min-width: 350px;
+    }
+}
+
+// Footer Changes
+#rt-copyright {
+    border-top: 1px solid @bodyborder;
+    .box-shadow(inset 0 1px 0 @bodyborder2);
+}
+
+/* Disqus */
+#disqus_thread {
+    margin-top: 20px;
+}
+
+
+// Mobile
+@media (max-width: 767px) {
+    // Responsive Iframe
+    .img-fulltext-left, .img-fulltext-right {
+        .jrblog_video_wrapper {
+            min-width: 0;
+        }
+    }
+}

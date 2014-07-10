@@ -156,13 +156,15 @@ Bebop::Taxonomy('Platform', array($game_post_type))->setLabel('menu_name', 'Plat
 // Page: Video
 $metafields = array(
     'jrblog_page_video_src',
-    'jrblog_page_video_id'
+    'jrblog_page_video_id',
+    'jrblog_page_video_list'
 );
 
 $page_video_metabox = Bebop::Metabox('Video', array('post', 'page'), $metafields, function($data, $entry) {
 
-        $src = $data->get('jrblog_page_video_src');
-        $id  = $data->get('jrblog_page_video_id');
+        $src  = $data->get('jrblog_page_video_src', true);
+        $id   = $data->get('jrblog_page_video_id', true);
+        $list = $data->get('jrblog_page_video_list', true);
     ?>
 
     <label for="">Video Source</label><br>
@@ -173,7 +175,11 @@ $page_video_metabox = Bebop::Metabox('Video', array('post', 'page'), $metafields
 
     <label for="">Video ID</label><br>
     <p><small><em>(ID of the Youtube or Vimeo Video. The Video will replaced the Featured Image on the Blog.)</em></small></p>
-    <input type="text" class="large-text" name="jrblog_page_video_src" value="<?php echo $name; ?>">
+    <input type="text" class="large-text" name="jrblog_page_video_id" value="<?php echo $id; ?>"><br /><br />
+
+    <label for="">Playlist ID</label><br>
+    <p><small><em>(ID of the Youtube or Vimeo Playlist. If set this will display a playlist instead.)</em></small></p>
+    <input type="text" class="large-text" name="jrblog_page_video_list" value="<?php echo $list; ?>">
 
 <?php }, array(
     'context'  => 'side'
@@ -182,17 +188,31 @@ $page_video_metabox = Bebop::Metabox('Video', array('post', 'page'), $metafields
 
 // Page: Options
 $metafields = array(
-    'jrblog_page_disable_excerpt'
+    'jrblog_page_disable_excerpt',
+    'jrblog_page_featured_position'
 );
 
 $page_options_metabox = Bebop::Metabox('Options', array('post', 'page'), $metafields, function($data, $entry) {
 
-        $excerpt = $data->get('jrblog_page_disable_excerpt');
+        $excerpt = $data->get('jrblog_page_disable_excerpt', true);
+        $pos     = $data->get('jrblog_page_featured_position', true);
+        if(empty($pos)) {
+            $pos = 'full';
+        }
     ?>
 
     <label for="">Disable Text Excerpt</label><br>
-    <p><small><em>(When checked, a text excerpt will not be included with the featured image or video. If a Featured Image or Video is not provided the Text Excerpt will still be Used.)</em></small></p>
+    <p><small><em>(When checked, a text excerpt will not be included with the Featured Image/Video. If a Featured Image/Video is not provided the Text Excerpt will still be Used.)</em></small></p>
     <input type="checkbox" name="jrblog_page_disable_excerpt" value="1" <?php echo (!empty($excerpt) ? ' checked="checked"' : ''); ?> /><br><br>
+
+    <label for="">Featured Image Position</label><br>
+    <p><small><em>(Set the position the Featured Image/Video will appear in on the Content page; full-width, floating to the left, or floating to the right. Use Gantry Default will use the option set in Gantry Settings.)</em></small></p>
+    <select name="jrblog_page_featured_position">
+        <option value="full"<?php echo (($pos == 'full') ? ' selected="selected"' : ''); ?>>Full Width (Default)</option>
+        <option value="left"<?php echo (($pos == 'left') ? ' selected="selected"' : ''); ?>>Float Left</option>
+        <option value="right"<?php echo (($pos == 'right') ? ' selected="selected"' : ''); ?>>Float Right</option>
+        <option value="gantry"<?php echo (($pos == 'gantry') ? ' selected="selected"' : ''); ?>>Use Gantry Default</option>
+    </select><br><br>
 
 <?php }, array(
     'context'  => 'side'
@@ -274,6 +294,79 @@ $social_options_metabox = Bebop::Metabox('Options', $social_post_type, $metafiel
 
 <?php }, array(
     'context'  => 'side'
+));
+
+
+// Posts, Pages, Characters, and Reviews: Associated Games
+Bebop::Metabox('Associated Games', array('post', 'page', $character_post_type, $review_post_type), array('associated_games'), function($data) {
+
+    $games_ids = $data->get('associated_games') ?: array();
+
+    $entries = get_posts(array(
+        'numberposts' => -1,
+        'orderby'     => 'title',
+        'order'       => 'ASC',
+        'post_type'   => 'game'
+    )); 
+
+    ?>
+
+    <select name="associated_games[]" class="chosen-select" multiple="multiple">
+        <?php if ($entries) { ?>
+
+            <?php foreach ($entries as $entry) { ?>
+                
+                <option <?php selected(in_array($entry->ID, $games_ids)) ?> value="<?php echo $entry->ID; ?>">
+                    <?php echo $entry->post_title; ?>
+                </option>
+
+            <?php } ?>
+        
+        <?php } else { ?>
+
+            <option disabled>No Games created until now</option>
+
+        <?php } ?>
+    </select>
+
+<?php }, array(
+    'context' => 'side' 
+));
+
+// Posts and Pages: Associated Characters
+Bebop::Metabox('Associated Characters', array('post', 'page'), array('associated_characters'), function($data) {
+
+    $games_ids = $data->get('associated_characters') ?: array();
+
+    $entries = get_posts(array(
+        'numberposts' => -1,
+        'orderby'     => 'title',
+        'order'       => 'ASC',
+        'post_type'   => 'character'
+    )); 
+
+    ?>
+
+    <select name="associated_characters[]" class="chosen-select" multiple="multiple">
+        <?php if ($entries) { ?>
+
+            <?php foreach ($entries as $entry) { ?>
+                
+                <option <?php selected(in_array($entry->ID, $games_ids)) ?> value="<?php echo $entry->ID; ?>">
+                    <?php echo $entry->post_title; ?>
+                </option>
+
+            <?php } ?>
+        
+        <?php } else { ?>
+
+            <option disabled>No Games created until now</option>
+
+        <?php } ?>
+    </select>
+
+<?php }, array(
+    'context' => 'side' 
 ));
 
 

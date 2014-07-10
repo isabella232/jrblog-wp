@@ -6,6 +6,8 @@ class BlogPost {
 
     public function __construct(\WP_Post $item, $relations = false)
     {
+        global $gantry;
+
         ///////////////////////////////////
         // Inherit all $item properties  //
         ///////////////////////////////////
@@ -72,6 +74,16 @@ class BlogPost {
         if(!empty($skip)) {
             $this->use_excerpt = false;
         }
+
+        // Featured Image/Video Position
+        $pos               = get_post_meta( get_the_ID(), 'jrblog_page_featured_position', true);
+        if(empty($pos) || $pos == 'gantry') {
+            if(!empty($gantry)) {
+                $pos = $gantry->get( 'thumb-position', 'left' );
+            }
+            $pos = 'full';
+        }
+        $this->feature_position = $pos;
 
         // Thumbnail
         $thumbnail_id        = get_post_thumbnail_id($this->ID);

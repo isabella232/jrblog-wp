@@ -150,27 +150,38 @@ $category = get_the_category();
 
 				<?php /** Begin Featured Image **/ ?>
 
-                <?php if( !empty($blog->use_video ) && (!empty($blog->use_excerpt) ||
-                        ($gantry->get( 'blog-content', 'content' ) != 'excerpt')) ): ?>
+                <?php if( !empty($blog->feature_position ) && in_array($blog->feature_position, array('left', 'right')) ) : ?>
 
-                    <div class="img-fulltext-<?php echo $gantry->get( 'thumb-position', 'left' ); ?>">
-                        <?php echo $blog->video->html; ?>
-                    </div>
+                    <?php if( !empty($blog->use_video ) ): ?>
 
-                <?php elseif( $gantry->get( 'single-featured-image', '1' ) && function_exists( 'the_post_thumbnail' ) && has_post_thumbnail() ) : ?>
+                        <div class="img-fulltext-<?php echo $blog->feature_position; ?>">
+                            <?php echo $blog->video->html; ?>
+                        </div>
 
-					<div class="img-fulltext-<?php echo $gantry->get( 'thumb-position', 'left' ); ?>">
-						<?php the_post_thumbnail( 'gantryThumb', array( 'class' => 'rt-image ' ) ); ?>			
-					</div>
-				
-				<?php endif; ?>
+                    <?php elseif( $gantry->get( 'single-featured-image', '1' ) && function_exists( 'the_post_thumbnail' ) && has_post_thumbnail() ) : ?>
+
+        				<div class="img-fulltext-<?php echo $blog->feature_position; ?>">
+        					<?php the_post_thumbnail( 'gantryThumb', array( 'class' => 'rt-image ' ) ); ?>			
+        				</div>
+        			
+        			<?php endif; ?>
+
+                <?php endif; ?>
 
 				<?php /** End Featured Image **/ ?>
 						
 				<?php /** Begin Post Content **/ ?>		
 						
 				<div class="post-content">
-						
+
+                    <?php if(empty($blog->feature_position) || $blog->feature_position == 'full'): ?>
+                        <?php if( !empty($blog->use_video ) ): ?>
+                            <?php echo $blog->video->html; ?>
+                        <?php elseif( $gantry->get( 'single-featured-image', '1' ) && function_exists( 'the_post_thumbnail' ) && has_post_thumbnail() ) : ?>
+                            <?php the_post_thumbnail( 'gantryThumb', array( 'class' => 'rt-image ' ) ); ?>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
 					<?php the_content(); ?>
 				
 				</div>

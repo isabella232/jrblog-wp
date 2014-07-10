@@ -94,25 +94,43 @@ global $validated, $emailSent, $name_error, $email_error, $message_error, $recap
 
 				<?php /** End Extended Meta **/ ?>
 
-				<?php /** Begin Featured Image **/ ?>
-			
-				<?php if( $gantry->get( 'page-featured-image', '0' ) && function_exists( 'the_post_thumbnail' ) && has_post_thumbnail() ) : ?>
+                <?php /** Begin Featured Image **/ ?>
 
-					<div class="img-fulltext-<?php echo $gantry->get( 'thumb-position', 'left' ); ?>">
-						<?php the_post_thumbnail( 'gantryThumb', array( 'class' => 'rt-image ' ) ); ?>			
-					</div>
-				
-				<?php endif; ?>
+                <?php if( !empty($blog->feature_position ) && in_array($blog->feature_position, array('left', 'right')) ) : ?>
 
-				<?php /** End Featured Image **/ ?>
-						
-				<?php /** Begin Post Content **/ ?>		
-						
-				<div class="post-content">	
-						
-					<?php the_content(); ?>
+                    <?php if( !empty($blog->use_video ) ): ?>
 
-				</div>
+                        <div class="img-fulltext-<?php echo $blog->feature_position; ?>">
+                            <?php echo $blog->video->html; ?>
+                        </div>
+
+                    <?php elseif( $gantry->get( 'page-featured-image', '0' ) && function_exists( 'the_post_thumbnail' ) && has_post_thumbnail() ) : ?>
+
+                        <div class="img-fulltext-<?php echo $blog->feature_position; ?>">
+                            <?php the_post_thumbnail( 'gantryThumb', array( 'class' => 'rt-image ' ) ); ?>          
+                        </div>
+                    
+                    <?php endif; ?>
+
+                <?php endif; ?>
+
+                <?php /** End Featured Image **/ ?>
+                        
+                <?php /** Begin Post Content **/ ?>     
+                        
+                <div class="post-content">
+
+                    <?php if(empty($blog->feature_position) || $blog->feature_position == 'full'): ?>
+                        <?php if( !empty($blog->use_video ) ): ?>
+                            <?php echo $blog->video->html; ?>
+                        <?php elseif( $gantry->get( 'page-featured-image', '0' ) && function_exists( 'the_post_thumbnail' ) && has_post_thumbnail() ) : ?>
+                            <?php the_post_thumbnail( 'gantryThumb', array( 'class' => 'rt-image ' ) ); ?>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
+                    <?php the_content(); ?>
+                
+                </div>
 
 				<?php edit_post_link( _r( 'Edit' ), '<div class="edit-link">', '</div>' ); ?>
 
