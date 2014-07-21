@@ -2,6 +2,9 @@
 
 namespace JR\Models;
 
+use \JR\Models\Character;
+use \JR\Models\Game;
+
 class BlogPost {
 
     public function __construct(\WP_Post $item, $relations = false)
@@ -93,6 +96,38 @@ class BlogPost {
             $this->thumbnail = $image[0];
         } else {
             $this->thumbnail = '';
+        }
+
+
+        ///////////////////////
+        // Get relation data //
+        ///////////////////////
+        if(!empty($relations)) {
+            // Character Data
+            $characters       = array();
+            $character_meta   = get_post_meta($this->ID, 'associated_characters', array());
+            if(!empty($character_meta) && !is_array($character_meta)) {
+                $character_meta = array($character_meta);
+            }
+            if(is_array($character_meta)) {
+                foreach($character_meta as $character) {
+                    $characters[] = Character::get($character);
+                }
+            }
+            $this->characters     = $characters;
+
+            // Game Data
+            $games       = array();
+            $game_meta   = get_post_meta($this->ID, 'associated_games', array());
+            if(!empty($game_meta) && !is_array($game_meta)) {
+                $game_meta = array($game_meta);
+            }
+            if(is_array($game_meta)) {
+                foreach($game_meta as $game) {
+                    $games[]      = Game::get($game);
+                }
+            }
+            $this->games          = $games;
         }
     }
 

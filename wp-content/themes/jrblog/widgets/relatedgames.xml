@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: relatedgames.xml 58623 2014-07-14 3:06:32Z jaidynreiman $ -->
+<form>
+    <fieldset name="widget">
+        <field name="title" type="text" label="Title" description="Title" class="widefat" size="30" default="Related Games" readonly="false" />
+        <field name="number" type="text" label="Number of Games to Show (0 = Unlimited):" description="Number of games to show, 0 = unlimited." class="widefat" size="30" default="0" readonly="false" />
+    </fieldset>
+</form>
