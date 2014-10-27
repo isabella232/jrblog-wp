@@ -1,0 +1,6 @@
+<div class="ca-gallery--browse-view">
+	{{#title}}<h4>{{title}}</h4>{{/title}}
+	{{#caption}}<p>{{& caption}}</p>{{/caption}}
+	{{#photo_credit}}<span class="description">{{& photo_credit}}</span><br><br>{{/photo_credit}}
+	High-resolution Download: {{#high_resolution_download_disabled}}<strong>Disabled</strong>{{/high_resolution_download_disabled}}{{^high_resolution_download_disabled}}<strong>Enabled</strong>{{/high_resolution_download_disabled}}
+</div>

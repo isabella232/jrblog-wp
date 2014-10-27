@@ -146,7 +146,7 @@ Bebop::Taxonomy('Alliance', array($character_post_type))->setLabel('menu_name', 
 Bebop::Taxonomy('Genre', array($game_post_type))->setLabel('menu_name', 'Genre');
 
 // Platform
-Bebop::Taxonomy('Platform', array($game_post_type))->setLabel('menu_name', 'Platform');
+Bebop::Taxonomy('Platform', array('post', 'page', $game_post_type, $review_post_type))->setLabel('menu_name', 'Platform');
 
 
 //////////////////////
@@ -300,74 +300,58 @@ $social_options_metabox = Bebop::Metabox('Options', $social_post_type, $metafiel
 // Posts, Pages, Characters, and Reviews: Associated Games
 Bebop::Metabox('Associated Games', array('post', 'page', $character_post_type, $review_post_type), array('associated_games'), function($data) {
 
-    $games_ids = $data->get('associated_games') ?: array();
+    // Old Associated Games Exist?
+    $games = array();
+    $games_old = $data->get('associated_games') ?: array();
+    foreach($games_old as $game) {
+        // Game is an Integer
+        if(is_numeric($game)) {
+            $obj = new stdclass;
+            $obj->id = $game;
+            $obj->description = '';
+            $games[] = json_encode($obj);
+        }
+        else {
+            $games[] = $game;
+        }
+    }
 
-    $entries = get_posts(array(
-        'numberposts' => -1,
-        'orderby'     => 'title',
-        'order'       => 'ASC',
-        'post_type'   => 'game'
-    )); 
+    // List Associated Games
+    Bebop::UI()->List('Associated Games', $games, array('field_name' => 'associated_games'))
+               ->replaceFormEl('add', __DIR__ .'/templates/associated-games/add-form-el.php')
+               ->setItemView('browse', __DIR__.'/templates/associated-games/browse.php')
+               ->setItemView('edit', __DIR__.'/templates/associated-games/edit.php')
+               ->render();
 
-    ?>
+});
 
-    <select name="associated_games[]" class="chosen-select" multiple="multiple">
-        <?php if ($entries) { ?>
+// Posts, Pages, Games, and Reviews: Associated Characters
+Bebop::Metabox('Associated Characters', array('post', 'page', $game_post_type, $review_post_type), array('associated_characters'), function($data) {
 
-            <?php foreach ($entries as $entry) { ?>
-                
-                <option <?php selected(in_array($entry->ID, $games_ids)) ?> value="<?php echo $entry->ID; ?>">
-                    <?php echo $entry->post_title; ?>
-                </option>
+    // Old Associated Characters Exist?
+    $characters = array();
+    $characters_old = $data->get('associated_characters') ?: array();
+    foreach($characters_old as $character) {
+        // Game is an Integer
+        if(is_numeric($character)) {
+            $obj = new stdclass;
+            $obj->id = $character;
+            $obj->description = '';
+            $characters[] = json_encode($obj);
+        }
+        else {
+            $characters[] = $character;
+        }
+    }
 
-            <?php } ?>
-        
-        <?php } else { ?>
+    // List Associated Characters
+    Bebop::UI()->List('Associated Characters', $characters, array('field_name' => 'associated_characters'))
+               ->replaceFormEl('add', __DIR__ .'/templates/associated-characters/add-form-el.php')
+               ->setItemView('browse', __DIR__.'/templates/associated-characters/browse.php')
+               ->setItemView('edit', __DIR__.'/templates/associated-characters/edit.php')
+               ->render();
 
-            <option disabled>No Games created until now</option>
-
-        <?php } ?>
-    </select>
-
-<?php }, array(
-    'context' => 'side' 
-));
-
-// Posts and Pages: Associated Characters
-Bebop::Metabox('Associated Characters', array('post', 'page'), array('associated_characters'), function($data) {
-
-    $games_ids = $data->get('associated_characters') ?: array();
-
-    $entries = get_posts(array(
-        'numberposts' => -1,
-        'orderby'     => 'title',
-        'order'       => 'ASC',
-        'post_type'   => 'character'
-    )); 
-
-    ?>
-
-    <select name="associated_characters[]" class="chosen-select" multiple="multiple">
-        <?php if ($entries) { ?>
-
-            <?php foreach ($entries as $entry) { ?>
-                
-                <option <?php selected(in_array($entry->ID, $games_ids)) ?> value="<?php echo $entry->ID; ?>">
-                    <?php echo $entry->post_title; ?>
-                </option>
-
-            <?php } ?>
-        
-        <?php } else { ?>
-
-            <option disabled>No Games created until now</option>
-
-        <?php } ?>
-    </select>
-
-<?php }, array(
-    'context' => 'side' 
-));
+});
 
 
 #######################################

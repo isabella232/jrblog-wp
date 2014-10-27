@@ -2,6 +2,9 @@
 
 namespace JR\Models;
 
+use \JR\Models\Character;
+use \JR\Models\Game;
+
 class Review {
 
     public function __construct(\WP_Post $item, $relations = false)
@@ -14,10 +17,7 @@ class Review {
         }
 
         $this->name          = $this->post_title;
-        $this->slug          = get_post_meta($this->ID, 'jrblog_social_slug', true);
-        if(empty($this->slug)) {
-            $this->slug      = $this->post_name;
-        }
+        $this->slug          = $this->post_name;
         $this->excerpt       = $this->post_excerpt;
         $this->permalink     = get_permalink($this->ID);
 
@@ -47,18 +47,53 @@ class Review {
         // Get relation data //
         ///////////////////////
         if(!empty($relations)) {
+            // Character Data
+            $characters     = array();
+            $character_meta = get_post_meta($this->ID, 'associated_characters');
+            if(!empty($character_meta) && !is_array($character_meta)) {
+                $character_meta = array($character_meta);
+            }
+            if(is_array($character_meta)) {
+                foreach($character_meta as $character) {
+                    // Is Numeric? Generate Object
+                    if(is_numeric($character)) {
+                        $obj              = Character::get($character);
+                        $obj->description = '';
+                        $characters[]     = $obj;
+                    }
+                    else {
+                        $item             = json_decode($character);
+                        $obj              = Character::get($item->id);
+                        $obj->description = \JR\Utils::parseMarkdown($item->description);
+                        $characters[]     = $obj;
+                    }
+                }
+            }
+            $this->characters             = $characters;
+    
             // Game Data
-            $games       = array();
-            $game_meta   = get_post_meta($this->ID, 'associated_games', true);
+            $games     = array();
+            $game_meta = get_post_meta($this->ID, 'associated_games');
             if(!empty($game_meta) && !is_array($game_meta)) {
                 $game_meta = array($game_meta);
             }
             if(is_array($game_meta)) {
                 foreach($game_meta as $game) {
-                    $games[]      = Game::get($game);
+                    // Is Numeric? Generate Object
+                    if(is_numeric($game)) {
+                        $obj              = Game::get($game);
+                        $obj->description = '';
+                        $games[]          = $obj;
+                    }
+                    else {
+                        $item             = json_decode($game);
+                        $obj              = Game::get($item->id);
+                        $obj->description = \JR\Utils::parseMarkdown($item->description);
+                        $games[]          = $obj;
+                    }
                 }
             }
-            $this->games          = $games;
+            $this->games                  = $games;
         }
     }
 

@@ -51,9 +51,6 @@ class jrBlogWidgetRelatedCharacters extends GantryWidget {
             case "page":
                 $post = \JR\Models\BlogPost::get($id, true);
                 break;
-            case "character":
-                $post = \JR\Models\Character::get($id, true);
-                break;
             case "game":
                 $post = \JR\Models\Game::get($id, true);
                 break;
@@ -169,7 +166,7 @@ class jrBlogWidgetRelatedCharacters extends GantryWidget {
 
         $output = '';
 
-        if( !$number = ( int ) $instance['number'] ) $number = 5; else if( $number < 1 ) $number = 1;
+        if( !$number = ( int ) $instance['number'] ) $number = 0;
 
         $characters = $post->characters;
 

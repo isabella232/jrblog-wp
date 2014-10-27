@@ -14,10 +14,7 @@ class PortfolioItem {
         }
 
         $this->name          = $this->post_title;
-        $this->slug          = get_post_meta($this->ID, 'jrblog_social_slug', true);
-        if(empty($this->slug)) {
-            $this->slug      = $this->post_name;
-        }
+        $this->slug          = $this->post_name;
         $this->excerpt       = $this->post_excerpt;
         $this->permalink     = get_permalink($this->ID);
 

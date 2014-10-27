@@ -51,11 +51,8 @@ class jrBlogWidgetRelatedGames extends GantryWidget {
             case "page":
                 $post = \JR\Models\BlogPost::get($id, true);
                 break;
-            case "game":
-                $post = \JR\Models\Game::get($id, true);
-                break;
-            case "game":
-                $post = \JR\Models\Game::get($id, true);
+            case "character":
+                $post = \JR\Models\Character::get($id, true);
                 break;
             case "review":
                 $post = \JR\Models\Review::get($id, true);
@@ -81,7 +78,7 @@ class jrBlogWidgetRelatedGames extends GantryWidget {
             $post        = $this->get_post_object();
 
             // Skip If Option Isn't Available for This Post Type
-            if ( !in_array($post->post_type, array('post', 'page')) || empty($post->games) ) {
+            if ( !in_array($post->post_type, array('post', 'page', 'character', 'review')) || empty($post->games) ) {
                 return false;
             }
 
@@ -169,7 +166,7 @@ class jrBlogWidgetRelatedGames extends GantryWidget {
 
         $output = '';
 
-        if( !$number = ( int ) $instance['number'] ) $number = 5; else if( $number < 1 ) $number = 1;
+        if( !$number = ( int ) $instance['number'] ) $number = 0;
 
         $games = $post->games;
 

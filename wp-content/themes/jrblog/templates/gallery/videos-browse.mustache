@@ -1,0 +1,25 @@
+{{#id}}
+<div class="bebop-ui-clrfix">
+    {{#source_is_youtube}}
+        <div CA-gallery--youtube-item-el="embed">
+            <iframe src="//www.youtube.com/embed/{{id}}" width="300" height="160" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
+        <div CA-gallery--youtube-item-el="meta">
+            {{#title}}<h4>{{title}}</h4>{{/title}}
+            {{#caption}}<p>{{& caption}}</p>{{/caption}}
+        </div>
+    {{/source_is_youtube}}
+    {{#source_is_vimeo}}
+    	<div CA-gallery--vimeo-item-el="embed">
+    		<iframe src="//player.vimeo.com/video/{{id}}" width="300" height="160" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    	</div>
+    	<div CA-gallery--vimeo-item-el="meta">
+    		{{#title}}<h4>{{title}}</h4>{{/title}}
+    		{{#caption}}<p>{{& caption}}</p>{{/caption}}
+    	</div>
+    {{/source_is_vimeo}}
+</div>
+{{/id}}
+{{^id}}
+<span class="description">You need to insert a video ID</span>
+{{/id}}

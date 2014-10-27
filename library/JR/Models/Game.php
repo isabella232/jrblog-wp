@@ -2,6 +2,8 @@
 
 namespace JR\Models;
 
+use \JR\Models\Character;
+
 class Game {
 
     public function __construct(\WP_Post $item, $relations = false)
@@ -14,10 +16,7 @@ class Game {
         }
 
         $this->name          = $this->post_title;
-        $this->slug          = get_post_meta($this->ID, 'jrblog_social_slug', true);
-        if(empty($this->slug)) {
-            $this->slug      = $this->post_name;
-        }
+        $this->slug          = $this->post_name;
         $this->excerpt       = $this->post_excerpt;
         $this->permalink     = get_permalink($this->ID);
 
@@ -47,10 +46,34 @@ class Game {
         // Get relation data //
         ///////////////////////
         if(!empty($relations)) {
-            $this->reviews    = Reviews::filter(array('game_id' => $this->ID));
-            $this->characters = Characters::filter(array('game_id' => $this->ID));
-            $this->posts      = Blog::filter(array('game_id' => $this->ID));
-            $this->pages      = Blog::filter(array('game_id' => $this->ID, 'is_page' => true));
+            // Character Data
+            $characters     = array();
+            $character_meta = get_post_meta($this->ID, 'associated_characters');
+            if(!empty($character_meta) && !is_array($character_meta)) {
+                $character_meta = array($character_meta);
+            }
+            if(is_array($character_meta)) {
+                foreach($character_meta as $character) {
+                    // Is Numeric? Generate Object
+                    if(is_numeric($character)) {
+                        $obj              = Character::get($character);
+                        $obj->description = '';
+                        $characters[]     = $obj;
+                    }
+                    else {
+                        $item             = json_decode($character);
+                        $obj              = Character::get($item->id);
+                        $obj->description = \JR\Utils::parseMarkdown($item->description);
+                        $characters[]     = $obj;
+                    }
+                }
+            }
+            $this->characters             = $characters;
+
+            // Get Posts/Pages
+            $this->reviews                = Reviews::filter(array('game_id' => $this->ID));
+            $this->posts                  = Blog::filter(array('game_id' => $this->ID));
+            $this->pages                  = Blog::filter(array('game_id' => $this->ID, 'is_page' => true));
         }
     }
 

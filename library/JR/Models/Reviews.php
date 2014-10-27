@@ -74,6 +74,18 @@ class Reviews {
             );
         }
 
+        if (isset($filters['character_id'])) {
+
+            if(empty($args['meta_query']) || is_array($args['meta_query'])) {
+                $args['meta_query'] = array();
+            }
+            $args['meta_query'][] = array(
+                'key'     => 'associated_characters',
+                'value'   => serialize(strval($filters['character_id'])),
+                'compare' => 'LIKE'
+            );
+        }
+
 
         $items = get_posts($args);
 

@@ -104,30 +104,52 @@ class BlogPost {
         ///////////////////////
         if(!empty($relations)) {
             // Character Data
-            $characters       = array();
-            $character_meta   = get_post_meta($this->ID, 'associated_characters', array());
+            $characters     = array();
+            $character_meta = get_post_meta($this->ID, 'associated_characters');
             if(!empty($character_meta) && !is_array($character_meta)) {
                 $character_meta = array($character_meta);
             }
             if(is_array($character_meta)) {
                 foreach($character_meta as $character) {
-                    $characters[] = Character::get($character);
+                    // Is Numeric? Generate Object
+                    if(is_numeric($character)) {
+                        $obj              = Character::get($character);
+                        $obj->description = '';
+                        $characters[]     = $obj;
+                    }
+                    else {
+                        $item             = json_decode($character);
+                        $obj              = Character::get($item->id);
+                        $obj->description = \JR\Utils::parseMarkdown($item->description);
+                        $characters[]     = $obj;
+                    }
                 }
             }
-            $this->characters     = $characters;
+            $this->characters             = $characters;
 
             // Game Data
-            $games       = array();
-            $game_meta   = get_post_meta($this->ID, 'associated_games', array());
+            $games     = array();
+            $game_meta = get_post_meta($this->ID, 'associated_games');
             if(!empty($game_meta) && !is_array($game_meta)) {
                 $game_meta = array($game_meta);
             }
             if(is_array($game_meta)) {
                 foreach($game_meta as $game) {
-                    $games[]      = Game::get($game);
+                    // Is Numeric? Generate Object
+                    if(is_numeric($game)) {
+                        $obj              = Game::get($game);
+                        $obj->description = '';
+                        $games[]          = $obj;
+                    }
+                    else {
+                        $item             = json_decode($game);
+                        $obj              = Game::get($item->id);
+                        $obj->description = \JR\Utils::parseMarkdown($item->description);
+                        $games[]          = $obj;
+                    }
                 }
             }
-            $this->games          = $games;
+            $this->games                  = $games;
         }
     }
 

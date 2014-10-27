@@ -62,19 +62,6 @@ class Characters {
         }
 
 
-        if (isset($filters['game_id'])) {
-
-            if(empty($args['meta_query']) || is_array($args['meta_query'])) {
-                $args['meta_query'] = array();
-            }
-            $args['meta_query'][] = array(
-                'key'     => 'associated_games',
-                'value'   => serialize(strval($filters['game_id'])),
-                'compare' => 'LIKE'
-            );
-        }
-
-
         $items = get_posts($args);
 
         $parsed_items = array();

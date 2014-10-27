@@ -2,6 +2,9 @@
 
 namespace JR\Models;
 
+use \JR\Models\Blog;
+use \JR\Models\Game;
+
 class Character {
 
     public function __construct(\WP_Post $item, $relations = false)
@@ -48,21 +51,33 @@ class Character {
         ///////////////////////
         if(!empty($relations)) {
             // Game Data
-            $games       = array();
-            $game_meta   = get_post_meta($this->ID, 'associated_games', true);
+            $games     = array();
+            $game_meta = get_post_meta($this->ID, 'associated_games');
             if(!empty($game_meta) && !is_array($game_meta)) {
                 $game_meta = array($game_meta);
             }
             if(is_array($game_meta)) {
                 foreach($game_meta as $game) {
-                    $games[]      = Game::get($game);
+                    // Is Numeric? Generate Object
+                    if(is_numeric($game)) {
+                        $obj              = Game::get($game);
+                        $obj->description = '';
+                        $games[]          = $obj;
+                    }
+                    else {
+                        $item             = json_decode($game);
+                        $obj              = Game::get($item->id);
+                        $obj->description = \JR\Utils::parseMarkdown($item->description);
+                        $games[]          = $obj;
+                    }
                 }
             }
-            $this->games          = $games;
+            $this->games                  = $games;
 
             // Get Posts/Pages
-            $this->posts          = Blog::filter(array('game_id' => $this->ID));
-            $this->pages          = Blog::filter(array('game_id' => $this->ID, 'is_page' => true));
+            $this->reviews                = Reviews::filter(array('character_id' => $this->ID));
+            $this->posts                  = Blog::filter(array('character_id' => $this->ID));
+            $this->pages                  = Blog::filter(array('character_id' => $this->ID, 'is_page' => true));
         }
     }
 
